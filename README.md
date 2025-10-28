@@ -1,7 +1,7 @@
 # Lattice-Sky-of-Blades
 NYCU-3DGP-Team1 Final Project
 
-<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/707498ba-007f-40ee-bf12-6b7c8db1f33e" />
+<img width="512" height="768" alt="image" src="https://github.com/user-attachments/assets/707498ba-007f-40ee-bf12-6b7c8db1f33e" />
 
 A 3D action platformer where you fight colossal bullet-hell bosses in arenas without floors.
 
