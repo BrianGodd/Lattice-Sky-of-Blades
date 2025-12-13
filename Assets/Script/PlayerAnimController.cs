@@ -68,7 +68,8 @@ public class PlayerAnimController : MonoBehaviour
                     Kirito.clip = ATTSound[0];
                     Kirito.Play();
                 }
-                animator.Play("leftSlash");
+                animator.SetBool("slashleft", true);
+                animator.SetBool("slashright", false);
                 if(isLeft && isSkill)// && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash"))
                 {
                     isLeft = false;
@@ -93,7 +94,8 @@ public class PlayerAnimController : MonoBehaviour
                     Kirito.clip = ATTSound[1];
                     Kirito.Play();
                 }
-                animator.Play("rightslash");
+                animator.SetBool("slashright", true);
+                animator.SetBool("slashleft", false);
                 if(!isLeft && isSkill)// && !animator.GetCurrentAnimatorStateInfo(3).IsName("leftSlash"))
                 {
                     isLeft = true;
@@ -112,8 +114,8 @@ public class PlayerAnimController : MonoBehaviour
 
             if(isSkill)
             {
-                FPC.m_WalkSpeed = 3f;
-                FPC.m_RunSpeed = 6f;
+                //FPC.m_WalkSpeed = 3f;
+                //FPC.m_RunSpeed = 6f;
                 animator.SetFloat("speed", (skillCount)/(needCount) + 1f);
 
                 if(skillCount>=needCount)
@@ -130,13 +132,13 @@ public class PlayerAnimController : MonoBehaviour
             }
             else if (isHurt)
             {
-                FPC.m_WalkSpeed = 2f;
-                FPC.m_RunSpeed = 4f;
+                //FPC.m_WalkSpeed = 2f;
+                //FPC.m_RunSpeed = 4f;
             }
             else
             {
-                FPC.m_WalkSpeed = 5f;
-                FPC.m_RunSpeed = 10f;
+                //FPC.m_WalkSpeed = 5f;
+                //FPC.m_RunSpeed = 10f;
             }
         }
     }

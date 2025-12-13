@@ -14,12 +14,13 @@ public class JoyStickController : MonoBehaviour
     public Transform CameraV, fakePlayer;
     public GameObject body;
     public VariableJoystick variableJoystick;
+    public float initialSpeed = 1.2f, runSpeed = 2.5f;
     public float Speed = 1.2f, rollSpeed = 2f, turnSpeed = 0.5f, cameraTurnSpeed = 2f, standTurnSpeed = 3f;
     public float lastVertical = 0;
     
     public float groundCheckDistance = 0.1f;
     public float gravity = -9.81f;
-    public bool isGrounded = false;
+    public bool isGrounded = false, isRun = false;
     private Vector3 velocity;
 
     public float Vertical, Horizontal;
@@ -45,6 +46,24 @@ public class JoyStickController : MonoBehaviour
         if(!isJoystick)
         {
             RotateView();
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                JoyStickArea.isRoll = true;
+                body.transform.GetComponent<Animator>().SetBool("roll", true);
+                body.transform.GetComponent<Animator>().SetBool("run", false);
+                RollOnce();
+            }
+            
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                isRun = true;
+                Speed = runSpeed;
+            }
+            else
+            {
+                isRun = false;
+                Speed = initialSpeed;
+            }
             if(Input.GetKey(KeyCode.W))
             {
                 JoyStickArea.isMove = true;
@@ -83,8 +102,36 @@ public class JoyStickController : MonoBehaviour
         //else if(!JoyStickArea.isMove && CineCameraAnim.GetBool("fov_up")) CineCameraAnim.SetBool("fov_up", false);
         
         Vector3 direction;
-        direction = CameraV.forward * Vertical + CameraV.right * Horizontal;
-        direction.y = 0;
+        if(!isJoystick)
+        {
+            direction = CameraV.forward * Vertical + CameraV.right * Horizontal;
+            direction.y = 0;
+        }
+        else
+        {
+
+            if(ViewTurnController.isTurn && JoyStickArea.isMove)
+                direction = TurnController.iniRot* Vector3.forward * variableJoystick.Vertical + TurnController.iniRot* Vector3.right * variableJoystick.Horizontal;
+            else
+            {
+                if(variableJoystick.Vertical < 0)
+                    direction = CameraV.forward * variableJoystick.Vertical + CameraV.right * variableJoystick.Horizontal;
+                else
+                { 
+                    if(lastVertical*variableJoystick.Vertical < 0) JoyStick.iniRot = CameraV.rotation;
+                        direction = JoyStick.iniRot* Vector3.forward * variableJoystick.Vertical + JoyStick.iniRot* Vector3.right * variableJoystick.Horizontal;
+                }
+                lastVertical = variableJoystick.Vertical;
+            }
+            direction.y = 0;
+
+            if(!ViewTurnController.isTurn && !JoyStickArea.isRoll)
+            {
+                CameraV.rotation =
+                    Quaternion.Slerp(CameraV.rotation, transform.rotation, Time.deltaTime * cameraTurnSpeed);
+                    CameraV.rotation = Quaternion.Euler(new Vector3(19.19f, CameraV.eulerAngles.y, 0)); 
+            }
+        }
         
         /*if(!(ViewTurnController.isTurn && JoyStickArea.isMove))
         {
@@ -101,12 +148,7 @@ public class JoyStickController : MonoBehaviour
                 CameraV.rotation = Quaternion.Euler(new Vector3(19.19f, CameraV.eulerAngles.y, 0));
             }
         }*/
-        /*if(!ViewTurnController.isTurn && !JoyStickArea.isRoll)
-        {
-               CameraV.rotation =
-                Quaternion.Slerp(CameraV.rotation, transform.rotation, Time.deltaTime * cameraTurnSpeed);
-                CameraV.rotation = Quaternion.Euler(new Vector3(19.19f, CameraV.eulerAngles.y, 0)); 
-        }*/
+        
 
         if(!JoyStickArea.isMove)
         {
