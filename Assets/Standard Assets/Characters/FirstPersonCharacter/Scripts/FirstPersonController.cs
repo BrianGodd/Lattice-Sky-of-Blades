@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
@@ -51,6 +51,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+            jumpFlag = false;
             fade.SetActive(true);
             fir_Camera.GetComponent<Camera>().enabled = true;
             thr_Camera.GetComponent<Camera>().enabled = false;
@@ -110,7 +111,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-
+        [SerializeField] float downAss;
         private void PlayLandingSound()
         {
             m_AudioSource.clip = m_LandSound;
@@ -118,6 +119,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle + .5f;
         }
 
+        bool jumpFlag;
 
         private void FixedUpdate()
         {
@@ -139,24 +141,38 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MoveDir.x = desiredMove.x*speed* (1f + addForwardSpeed);
             m_MoveDir.z = desiredMove.z*speed* (1f + addForwardSpeed);
 
-
-            if (m_CharacterController.isGrounded)
+            if (!jumpFlag)
             {
-                m_MoveDir.y = -m_StickToGroundForce;
-
-                if (m_Jump)
+                if (m_CharacterController.isGrounded)
                 {
-                    m_MoveDir.y = m_JumpSpeed + addSpeed;
-                    PlayJumpSound();
-                    m_Jump = false;
-                    m_Jumping = true;
+                    
+                    m_MoveDir.y = -m_StickToGroundForce;
+
+                    //if (m_Jump)
+                    //{
+                    //    m_MoveDir.y = m_JumpSpeed + addSpeed;
+                    //    PlayJumpSound();
+                    //    m_Jump = false;
+                    //    m_Jumping = true;
+                    //}
                 }
+                else
+                {
+                    m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
+                }
+
             }
             else
             {
-                m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
+                jumpFlag = false;
             }
-            m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                m_MoveDir.y += downAss;
+            }
+
+                m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
@@ -167,6 +183,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             m_AudioSource.clip = m_JumpSound;
             m_AudioSource.Play();
+        }
+
+        public void jump() {
+            jumpFlag = true;
+            m_MoveDir.y = m_JumpSpeed + addSpeed;
+            PlayJumpSound();
+            m_Jump = false;
+            m_Jumping = true;
         }
 
 
@@ -205,6 +229,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_FootstepSounds[0] = m_AudioSource.clip;
         }
 
+
+        public void normalJump()
+        {
+
+        }
 
         private void UpdateCameraPosition(float speed)
         {

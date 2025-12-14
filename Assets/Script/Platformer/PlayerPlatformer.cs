@@ -1,8 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerPlatformer : MonoBehaviour
 {
@@ -24,22 +25,29 @@ public class PlayerPlatformer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isGround && Input.GetKey(KeyCode.Space))
+        //if(isGround && Input.GetKey(KeyCode.Space))
+        //{
+        //    chargeTime += Time.deltaTime;
+        //    if(standTime > 0.3f && chargeTime > 0.3f && lastPlatform.layer == LayerMask.NameToLayer("Platformer"))
+        //    {
+        //        //slowdown game timescale for dramatic effect
+        //        Time.timeScale = Mathf.Clamp(1f - chargeTime * 0.5f, 0.5f, 1f);
+        //        if(effectAnim.GetBool("isCharging") == false)
+        //        {
+        //            effectAnim.SetBool("isCharging", true);
+        //        }
+        //    }
+        //}
+        if (!GetComponent<FirstPersonController>().m_Jump)
         {
-            chargeTime += Time.deltaTime;
-            if(standTime > 0.3f && chargeTime > 0.3f && lastPlatform.layer == LayerMask.NameToLayer("Platformer"))
-            {
-                //slowdown game timescale for dramatic effect
-                Time.timeScale = Mathf.Clamp(1f - chargeTime * 0.5f, 0.5f, 1f);
-                if(effectAnim.GetBool("isCharging") == false)
-                {
-                    effectAnim.SetBool("isCharging", true);
-                }
-            }
+            GetComponent<FirstPersonController>().m_Jump = CrossPlatformInputManager.GetButtonUp("Jump");
         }
-        if(isGround && Input.GetKeyUp(KeyCode.Space))
+
+        if (isGround && CrossPlatformInputManager.GetButton("Jump"))
         {
-            if(standTime < 0.3f && chargeTime < 0.3f)
+            GetComponent<FirstPersonController>().jump();
+            isGround = false;
+             if(standTime < 0.3f && chargeTime < 0.3f)
             {
                 Debug.Log("Magic Jump!");
                 StartCoroutine(MagicEffect());
@@ -71,6 +79,7 @@ public class PlayerPlatformer : MonoBehaviour
                 playerCamera.GetComponent<Animator>().SetBool("fov", true);
             }
             chargeTime = 0f;
+            GetComponent<FirstPersonController>().m_Jump = false;
         }
 
         if(isMagicJump)
@@ -91,6 +100,27 @@ public class PlayerPlatformer : MonoBehaviour
         }
     }
 
+    public void attemptJump()
+    {
+        if (standTime < 0.3f && chargeTime < 0.3f)
+        {
+            Debug.Log("Magic Jump!");
+            StartCoroutine(MagicEffect());
+            if (lastPlatform.layer == LayerMask.NameToLayer("Platformer"))
+            {
+                AudioSource src = lastPlatform.GetComponent<AudioSource>();
+
+                MusicManager.Instance.PlaySFX3D(
+                    src.clip,
+                    lastPlatform.transform.position,
+                    src.volume
+                );
+                lastPlatform.GetComponent<MeshDestroy>().DestroyMesh();
+            }
+        }
+        chargeTime = 0;
+    }
+
     IEnumerator MagicEffect()
     {
         Time.timeScale = 0.01f;
@@ -100,14 +130,14 @@ public class PlayerPlatformer : MonoBehaviour
         GetComponent<FirstPersonController>().addForwardSpeed = 1.2f;
         isMagicJump = true;
         effectAnim.SetBool("isCharging", false);
-        playerCamera.GetComponent<Animator>().SetBool("fov", true);
+        //playerCamera.GetComponent<Animator>().SetBool("fov", true);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Platformer") || other.gameObject.layer == LayerMask.NameToLayer("StaticPlatformer"))
         {
-            if(playerCamera.GetComponent<Animator>().GetBool("fov")) playerCamera.GetComponent<Animator>().SetBool("fov", false);
+            //if(playerCamera.GetComponent<Animator>().GetBool("fov")) playerCamera.GetComponent<Animator>().SetBool("fov", false);
             standTime = 0f;
             isGround = true;
             isMagicJump = false;

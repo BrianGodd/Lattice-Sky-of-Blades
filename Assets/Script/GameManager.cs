@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +6,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class GameManager : MonoBehaviour
 {
+    
     public Camera fir_Camera, thr_Camera;
     public FirstPersonController FPC;
     public Animator asuna, frieren, myAnim, fade;
@@ -32,9 +33,9 @@ public class GameManager : MonoBehaviour
             if(!isFirst) joyStickController.m_MouseLook.Init(joyStickController.fakePlayer , joyStickController.CameraV);
             else joyStickController.m_MouseLook.Init(joyStickController.transform , joyStickController.CameraV);
         }
-        fir_Camera.GetComponent<Camera>().enabled = isFirst;
+        //fir_Camera.GetComponent<Camera>().enabled = isFirst;
         thr_Camera.GetComponent<Camera>().enabled = !isFirst;
-        fir_Camera.gameObject.SetActive(isFirst);
+        //fir_Camera.gameObject.SetActive(isFirst);
         thr_Camera.gameObject.SetActive(!isFirst);
     }
 
@@ -86,6 +87,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenSitHint()
     {
+
         if(mode != 1) UISit.SetActive(true);
     }
 
