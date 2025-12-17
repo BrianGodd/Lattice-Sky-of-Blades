@@ -58,6 +58,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float crouchHeightResponse = 10f;
     [SerializeField] private float earlyJumpWindow = 0.3f;
     [SerializeField] private float earlyJumpForwardBoost = 10f;
+    [SerializeField] private float fastFallSpeed = 20f;
 
     [Range(0f, 1f)]
     [SerializeField] private float standCameraTargetHeight = 0.9f;
@@ -73,6 +74,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedJump;
     private bool _requestedJumpSustain;
     private bool _requestedCrouch;
+    // private bool _lastRequestedCrouch;
     private float _timeSinceGrounded;
 
     public void Initialize()
@@ -144,6 +146,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 var wasInAir = _lastState.Grounded == false;
                 if (moving && crouching && (wasStanding || wasInAir))
                 {
+                    Debug.Log("Start Slide");
                     _state.Stance = Stance.Slide;
 
                     var slideSpeed = Mathf.Max(currentVelocity.magnitude, slideStartSpeed);
@@ -153,7 +156,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                         surfaceNormal: motor.GroundingStatus.GroundNormal
                     ) * slideSpeed;
                     
-                    currentVelocity += motor.CharacterUp * -slideStartDownardSpeed;
+                    // currentVelocity += motor.CharacterUp * -slideStartDownardSpeed;
                 }
             }
 
@@ -208,6 +211,15 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         }
         else
         {
+            // Fast fall when crouch is pressed in air
+            if (_requestedCrouch)
+            {
+                Debug.Log("Fast Fall");
+                var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
+                currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
+                _requestedCrouch = false;
+            }
+
             if(_requestedMovement.sqrMagnitude > 0f)
             {
                 var planarMovement = Vector3.ProjectOnPlane(_requestedMovement, motor.CharacterUp).normalized * _requestedMovement.magnitude;
@@ -254,6 +266,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 // Apply forward boost if jumped within early jump window
                 if (_timeSinceGrounded < earlyJumpWindow)
                 {
+                    Debug.Log("Early Jump Boost");
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
                 }
