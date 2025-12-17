@@ -56,6 +56,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float standHeight = 2f;
     [SerializeField] private float crouchHeight = 1f;
     [SerializeField] private float crouchHeightResponse = 10f;
+    [SerializeField] private float earlyJumpWindow = 0.3f;
+    [SerializeField] private float earlyJumpForwardBoost = 10f;
 
     [Range(0f, 1f)]
     [SerializeField] private float standCameraTargetHeight = 0.9f;
@@ -71,6 +73,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedJump;
     private bool _requestedJumpSustain;
     private bool _requestedCrouch;
+    private float _timeSinceGrounded;
 
     public void Initialize()
     {
@@ -247,6 +250,13 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 var targetVerticalSpeed = Mathf.Max(currentVerticalSpeed, jumpSpeed);
                 currentVelocity += motor.CharacterUp * (targetVerticalSpeed - currentVerticalSpeed);
+
+                // Apply forward boost if jumped within early jump window
+                if (_timeSinceGrounded < earlyJumpWindow)
+                {
+                    var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
+                    currentVelocity += forward * earlyJumpForwardBoost;
+                }
             }
             else
             {
@@ -288,7 +298,19 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             );
         }
 
+        var wasGrounded = _state.Grounded;
         _state.Grounded = motor.GroundingStatus.IsStableOnGround;
+        
+        // Reset timer when landing
+        if (!wasGrounded && _state.Grounded)
+        {
+            _timeSinceGrounded = 0f;
+        }
+        else if (_state.Grounded)
+        {
+            _timeSinceGrounded += deltaTime;
+        }
+        
         _lastState = _tempState;
     }
 
