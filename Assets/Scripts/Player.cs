@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -23,12 +23,12 @@ public class Player : MonoBehaviour
             Rotation = Camera.main.transform.rotation,
             Jump = Input.GetButtonDown("Jump"),
             JumpSustain = Input.GetButton("Jump"),
-            Crouch = Input.GetKeyDown(KeyCode.C) ? CrouchInput.Toggle : CrouchInput.None,
+            Crouch = Input.GetKeyDown(KeyCode.LeftShift) ? CrouchInput.Toggle : CrouchInput.None,
             Attack = Input.GetButtonDown("Fire1")
         };
         playerCharacter.UpdateInput(input);
         playerCharacter.UpdateBody(deltaTime);
-        animator.SetBool("attack", input.Attack);
+        //animator.SetBool("attack", input.Attack);
         // cameraSpring.UpdateSpring(deltaTime, Camera.main.transform.up);
     }
 }
