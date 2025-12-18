@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class bulletBehavior : MonoBehaviour
 {
+
+    float Maxtime = 8f; 
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(DestroyCountdown());
     }
 
     // Update is called once per frame
@@ -16,13 +18,25 @@ public class bulletBehavior : MonoBehaviour
         
     }
 
+    IEnumerator DestroyCountdown()
+    {
+        yield return new WaitForSeconds(Maxtime);
+        Destroy(this.gameObject);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             print("Player Hit!");
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            //Destroy(other.gameObject);
+            //Destroy(this.gameObject);
         }
+    }
+
+    public void setTime(float existTime)
+    {
+        Maxtime = existTime;
     }
 }
