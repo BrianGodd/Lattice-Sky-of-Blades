@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Dungeon.unity
-    guid: d4dd4f9964513904cbd30e47cc3e3965
-  - enabled: 1
-    path: Assets/Scenes/Practice 2.unity
-    guid: a051b048b403ac140bb96514af9251a5
+    path: Assets/Scenes/The_Viking_Village.unity
+    guid: 00000000000000000000000000000000
   m_configObjects: {}
