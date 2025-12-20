@@ -52,6 +52,7 @@ public class PlayerPlatformer_New : MonoBehaviour
     public void MagicJump()
     {
         StartCoroutine(MagicEffect());
+        if(lastPlatform == null) return;
         AudioSource src = lastPlatform.GetComponent<AudioSource>();
 
         MusicManager.Instance.PlaySFX3D(

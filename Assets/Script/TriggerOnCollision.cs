@@ -14,7 +14,7 @@ public class TriggerOnCollision : MonoBehaviour
   protected float lastTriggeredTime = -1000f;
 
 
-  private void OnTriggerStay(Collider other)
+  private void OnTriggerEnter(Collider other)
   {
     //if layer mask is included in target mask
     if ((TargetLayerMask | (1 << other.gameObject.layer)) == TargetLayerMask)

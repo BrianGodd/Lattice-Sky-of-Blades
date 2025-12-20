@@ -416,12 +416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a27f585b94d0429181c5c6298112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XRHealthBehavior: {fileID: 0}
-  playerManager: {fileID: 2016401632}
-  frierenController: {fileID: 0}
-  mimicController: {fileID: 0}
-  Blood: {fileID: 675383319}
-  HPUI: {fileID: 297411154}
 --- !u!114 &43875015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21354,21 +21348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d875c461194ea74097cd4853f963ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isScene1: 0
-  isHurt: 0
-  Sword: {fileID: 7696892233888874027}
-  Kirito: {fileID: 7741764482125250159}
-  ATTSound:
-  - {fileID: 8300000, guid: 75dbec2de2ffcd94aab387eac52be3dd, type: 3}
-  - {fileID: 8300000, guid: ac2e4647f5b7c974abd7910588172e18, type: 3}
-  - {fileID: 8300000, guid: b94f7381b3be81e47956de1267fd53ca, type: 3}
-  animator: {fileID: 7741764482125250158}
-  FPC: {fileID: 2016401624}
-  StarBust: {fileID: 4412877183661391353, guid: cc6317e7e4832674ea3506d917d18ccc,
-    type: 3}
-  hintT: {fileID: 4944086313704854158, guid: 6f884dd847bacbd43ac29759e0d364ad, type: 3}
-  LC: {fileID: 270625588}
-  RC: {fileID: 904927668}
 --- !u!1001 &526385298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27804,12 +27783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a27f585b94d0429181c5c6298112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XRHealthBehavior: {fileID: 0}
-  playerManager: {fileID: 2016401632}
-  frierenController: {fileID: 0}
-  mimicController: {fileID: 0}
-  Blood: {fileID: 1636776081}
-  HPUI: {fileID: 778299490}
 --- !u!1 &855566745 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6389019010045659241, guid: f1e9dbcb8247678419d7cbe19011bd09,
@@ -29175,6 +29148,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 502751788289538273, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 502751788289538273, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -29248,6 +29226,16 @@ PrefabInstance:
       propertyPath: m_BackGroundColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2867869624963004166, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940892827561423118, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: minMagicSpeed
@@ -29257,6 +29245,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerPrefab(Unpack) (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4372234626777670159, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4372234626777670159, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
@@ -29273,6 +29266,16 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6349985958684627203, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6432715279762619966, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6432715279762619966, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_TagString
@@ -29280,8 +29283,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6609292454119428224, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609292454119428224, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7037837001125416794, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091638626944097244, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7530265986642341875, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
@@ -29925,6 +29943,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1005444481}
+    - targetCorrespondingSourceObject: {fileID: 7635048790938692559, guid: f6815793091a7104180c64ffa90149a3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1005444482}
+    - targetCorrespondingSourceObject: {fileID: 7635048790938692559, guid: f6815793091a7104180c64ffa90149a3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1005444483}
   m_SourcePrefab: {fileID: 100100000, guid: f6815793091a7104180c64ffa90149a3, type: 3}
 --- !u!1 &1005444479 stripped
 GameObject:
@@ -29959,6 +29985,61 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &1005444482
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005444479}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1005444483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005444479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c23b21f7db818e4785edeee5019ab1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  UnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1594817136}
+        m_TargetAssemblyTypeName: GolemController, Assembly-CSharp
+        m_MethodName: StartRoar
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  UnityEvent2:
+    m_PersistentCalls:
+      m_Calls: []
+  TriggerGap: 5
 --- !u!1 &1008423819
 GameObject:
   m_ObjectHideFlags: 0
@@ -32702,12 +32783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a27f585b94d0429181c5c6298112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XRHealthBehavior: {fileID: 0}
-  playerManager: {fileID: 0}
-  frierenController: {fileID: 1601667721}
-  mimicController: {fileID: 0}
-  Blood: {fileID: 615414171}
-  HPUI: {fileID: 1976179052}
 --- !u!114 &1290345887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56283,15 +56358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9cc36af7095b54186755dc11bcae55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 758324382}
-  GameManager: {fileID: 1512111939}
-  PlayerAnimController: {fileID: 525051603}
-  MaxHP: 18000
-  HP: 0
-  nextFrameTime: 0
-  frameTime: 0.2
-  hurtTime: 3
-  nowTime: 3
 --- !u!114 &2016401633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56304,11 +56370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd768816f98243f478ed59ec5628a5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGround: 0
-  isMagicJump: 0
-  playerCamera: {fileID: 758324375}
-  effectAnim: {fileID: 1205100199}
-  speedPP: {fileID: 1793081443}
 --- !u!136 &2016401637
 CapsuleCollider:
   m_ObjectHideFlags: 0

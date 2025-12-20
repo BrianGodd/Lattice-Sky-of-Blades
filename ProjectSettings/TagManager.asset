@@ -14,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - MMD
-  - 
+  - Player
+  - Platformer
   - Reflection_Probes
   - Lighting
   - Props
@@ -23,7 +23,7 @@ TagManager:
   - Ground
   - AccessibleVolume
   - PostProcessing
-  - 
+  - MMD
   - MainGround
   - 
   - 
