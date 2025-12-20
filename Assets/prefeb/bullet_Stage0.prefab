@@ -146,4 +146,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dde17d7623774e4e9e9bc78e02ce363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Maxtime: 4
   isStage0: 1

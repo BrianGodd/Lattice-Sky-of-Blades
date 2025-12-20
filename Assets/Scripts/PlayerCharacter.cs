@@ -36,6 +36,8 @@ public struct CharacterInput
 }
 public class PlayerCharacter : MonoBehaviour, ICharacterController
 {
+    public static PlayerCharacter Instance { get; private set; }
+
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
     [SerializeField] private Transform cameraTarget;
@@ -104,6 +106,12 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float minMagicSpeed;
     public void Initialize()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         motor.CharacterController = this;
     }
 
@@ -251,7 +259,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
-                _requestedCrouch = false;
+                //_requestedCrouch = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
@@ -310,6 +318,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
                     if(_jumpBuffered) _jumpBuffered = false;
+                    GetComponent<PlayerPlatformer_New>().MagicJump();
                 }
             }
             else
