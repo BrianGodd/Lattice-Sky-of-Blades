@@ -21215,12 +21215,12 @@ PrefabInstance:
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
       propertyPath: gap
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
       propertyPath: speed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
@@ -29046,7 +29046,7 @@ PrefabInstance:
     - target: {fileID: 7530265986642341875, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 66.5
+      value: 29.83
       objectReference: {fileID: 0}
     - target: {fileID: 7530265986642341875, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
@@ -29056,7 +29056,7 @@ PrefabInstance:
     - target: {fileID: 7530265986642341875, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -128.3
+      value: -44.14
       objectReference: {fileID: 0}
     - target: {fileID: 7530265986642341875, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
@@ -32809,12 +32809,12 @@ PrefabInstance:
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
       propertyPath: gap
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
       propertyPath: speed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
@@ -33002,12 +33002,12 @@ PrefabInstance:
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
       propertyPath: gap
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
       propertyPath: speed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3489068220099109660, guid: 1341e7a9c298a234f914ba5e5efcd191,
         type: 3}
