@@ -36,6 +36,8 @@ public struct CharacterInput
 }
 public class PlayerCharacter : MonoBehaviour, ICharacterController
 {
+    public static PlayerCharacter Instance { get; private set; }
+
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
     [SerializeField] private Transform cameraTarget;
@@ -310,6 +312,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
                     if(_jumpBuffered) _jumpBuffered = false;
+                    GetComponent<PlayerPlatformer_New>().MagicJump();
                 }
             }
             else
