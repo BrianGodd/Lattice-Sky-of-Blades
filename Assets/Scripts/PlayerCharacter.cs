@@ -275,6 +275,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                     Debug.Log("Early Jump Boost");
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
+                    GetComponent<PlayerPlatformer_New>().MagicJump();
                 }
             }
             else

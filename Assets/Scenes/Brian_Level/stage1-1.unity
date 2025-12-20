@@ -28770,6 +28770,36 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &934287742 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6051701612278679139, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+    type: 3}
+  m_PrefabInstance: {fileID: 975606367}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934287738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1bc5515e3ab954e80599c538834774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &934287745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934287738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6364b65d556a8488e181418ecc529e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMagicJump: 0
+  effectAnim: {fileID: 1205100199}
+  camerAnim: {fileID: 1419711401}
+  speedPP: {fileID: 1793081443}
+  lastPlatform: {fileID: 0}
+  motor: {fileID: 934287742}
 --- !u!4 &959684577 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 551325782620807136, guid: b82b234021f91884bba8c8cece952962,
@@ -29308,6 +29338,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 934287740}
+    - targetCorrespondingSourceObject: {fileID: 6432715279762619966, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 934287745}
     - targetCorrespondingSourceObject: {fileID: 2867869624963004166, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       insertIndex: -1
@@ -29316,6 +29350,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1419711393}
+    - targetCorrespondingSourceObject: {fileID: 2867869624963004166, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1419711401}
   m_SourcePrefab: {fileID: 100100000, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e, type: 3}
 --- !u!1 &989223766
 GameObject:
@@ -35062,6 +35100,27 @@ MonoBehaviour:
     CameraRadius: 0.2
     DampingIntoCollision: 0
     DampingFromCollision: 0.5
+--- !u!95 &1419711401
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419711391}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 050868dd062a65843a4714160302ff35, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1428032669
 GameObject:
   m_ObjectHideFlags: 0
