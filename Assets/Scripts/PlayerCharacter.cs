@@ -98,6 +98,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private Vector3 _externalForce;
     private float _dashTimer;
     private Vector3 _dashDirection;
+    private Vector3 _dashVelocity;
 
     [SerializeField] private float minMagicSpeed;
     public void Initialize()
@@ -325,8 +326,10 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             
             if (_dashTimer >= dashDuration)
             {
+                // Preserve only external forces by subtracting the base dash velocity
+                var externalVelocity = currentVelocity - _dashVelocity;
+                currentVelocity = externalVelocity;
                 _state.Stance = Stance.Stand;
-                currentVelocity = Vector3.zero;
                 Debug.Log("End Dash");
             }
             else
@@ -335,7 +338,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 // var curveMultiplier = dashSpeedCurve.Evaluate(normalizedTime);
                 // var targetSpeed = dashSpeed * curveMultiplier;
                 
-                currentVelocity = _dashDirection * dashSpeed;
+                _dashVelocity = _dashDirection * dashSpeed;
+                currentVelocity = _dashVelocity;
             }
         }
         
@@ -362,6 +366,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             // }
             
             _dashDirection = desiredDashDirection;
+            _dashVelocity = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
 
@@ -459,6 +464,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             motor.SetRotation(rotation.Value);
         }
         motor.BaseVelocity = Vector3.zero;
+        _state.Stance = Stance.Stand;
     }
 
     public void AddForce(Vector3 force)
