@@ -32,7 +32,8 @@ public class shootRock : MonoBehaviour
     void shoot()
     {
         var curRock = Instantiate(rock,origin.transform.position,rock.transform.rotation);
-        var rock_rig = curRock.GetComponent<rockMove>();
+        // var rock_rig = curRock.GetComponent<rockMove>();
+        var rock_rig = curRock.GetComponent<RockMovingPlatform>();
 
         rock_rig.init((target.transform.position - origin.transform.position).normalized * speed,origin.transform.position,target.transform.position);
         //print((target.transform.position - origin.transform.position).normalized * speed);

@@ -23,8 +23,9 @@ public class Player : MonoBehaviour
             Rotation = Camera.main.transform.rotation,
             Jump = Input.GetButtonDown("Jump"),
             JumpSustain = Input.GetButton("Jump"),
-            Crouch = Input.GetKeyDown(KeyCode.LeftShift) ? CrouchInput.Toggle : CrouchInput.None,
-            Attack = Input.GetButtonDown("Fire1")
+            Crouch = (Input.GetKeyDown(KeyCode.C)|| Input.GetKeyDown(KeyCode.LeftShift)) ? CrouchInput.Toggle : CrouchInput.None,
+            Attack = Input.GetButtonDown("Fire1"),
+            Dash = Input.GetKeyDown(KeyCode.E)
         };
         playerCharacter.UpdateInput(input);
         playerCharacter.UpdateBody(deltaTime);
