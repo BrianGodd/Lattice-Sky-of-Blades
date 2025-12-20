@@ -37,6 +37,8 @@ public struct CharacterInput
 public class PlayerCharacter : MonoBehaviour, ICharacterController
 {
     public static PlayerCharacter Instance { get; private set; }
+    public event Action OnMagicJump;
+    
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
     [SerializeField] private Transform cameraTarget;
@@ -103,7 +105,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private Vector3 _dashVelocity;
 
     [SerializeField] private float minMagicSpeed;
-    public void Initialize()
+
+    public void Awake()
     {
         if(Instance != null && Instance != this)
         {
@@ -111,6 +114,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             return;
         }
         Instance = this;
+    }
+    public void Initialize()
+    {
         motor.CharacterController = this;
     }
 
@@ -317,6 +323,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
                     if(_jumpBuffered) _jumpBuffered = false;
+                    OnMagicJump?.Invoke();
                     // GetComponent<PlayerPlatformer_New>().MagicJump();
                 }
             }
