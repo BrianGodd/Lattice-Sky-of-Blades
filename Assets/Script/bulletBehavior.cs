@@ -5,7 +5,7 @@ using UnityEngine;
 public class bulletBehavior : MonoBehaviour
 {
 
-    float Maxtime = 8f;
+    [SerializeField]float Maxtime = 8f;
     [SerializeField] bool isStage0;
     
     // Start is called before the first frame update

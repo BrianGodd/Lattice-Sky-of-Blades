@@ -7,7 +7,7 @@ public class showDiag : MonoBehaviour
 {
 
     [SerializeField] bool show = false;
-    [SerializeField] GameObject diag;
+    [SerializeField] TMP_Text diag;
     
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,8 @@ public class showDiag : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            diag.SetActive(show);
+            //diag.SetActive(show);
+            diag.text = "";
         }
     }
 
@@ -33,7 +34,8 @@ public class showDiag : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            diag.SetActive(show);
+            //diag.SetActive(show);
+            diag.text = "";
         }
     }
 }

@@ -33,7 +33,7 @@ public class endTrigger : MonoBehaviour
     IEnumerator tpCount()
     {
         yield return new WaitForSeconds(waittime);
-        player.transform.position = tpto.transform.position;
+        player.GetComponent<PlayerCharacter>().SetTransform(tpto.transform.position);
         tpflag = false;
     }
 

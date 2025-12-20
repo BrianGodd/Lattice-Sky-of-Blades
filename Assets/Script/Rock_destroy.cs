@@ -5,7 +5,9 @@ using UnityEngine;
 public class Rock_destroy : MonoBehaviour
 {
     bool flag = false;
-    [SerializeField] float destroyTime = 0.7f;
+    [SerializeField] float destroyTime = 0.7f,respawnTime;
+    [SerializeField] bool isrespawn;
+    [SerializeField] GameObject rock;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,14 @@ public class Rock_destroy : MonoBehaviour
     IEnumerator countDownDestroy(float tim)
     {
         yield return new WaitForSeconds(tim);
-        Destroy(gameObject);
+        if(!isrespawn)Destroy(gameObject);
+        else
+        {
+            rock.SetActive(false);
+            yield return new WaitForSeconds(respawnTime);
+            rock.SetActive(true);
+
+        }
     }
 
     private void OnTriggerEnter(Collider other)
