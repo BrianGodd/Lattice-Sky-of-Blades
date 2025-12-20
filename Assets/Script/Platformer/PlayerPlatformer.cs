@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -6,6 +6,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerPlatformer : MonoBehaviour
 {
+    /*
     public bool isGround = false, isMagicJump = false;
     public Camera playerCamera;
     public Animator effectAnim;
@@ -144,5 +145,5 @@ public class PlayerPlatformer : MonoBehaviour
             isGround = false;
             Debug.Log("Left!");
         }
-    }
+    }*/
 }

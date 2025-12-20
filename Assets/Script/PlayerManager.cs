@@ -1,9 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    /*
     public Animator anim;
     public GameManager GameManager;
     public PlayerAnimController PlayerAnimController;
@@ -50,5 +51,5 @@ public class PlayerManager : MonoBehaviour
                 HP -= 200.0f;
             }
         }
-    }
+    }*/
 }
