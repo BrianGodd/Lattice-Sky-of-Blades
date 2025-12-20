@@ -24,7 +24,8 @@ public class Player : MonoBehaviour
             Jump = Input.GetButtonDown("Jump"),
             JumpSustain = Input.GetButton("Jump"),
             Crouch = Input.GetKeyDown(KeyCode.C) ? CrouchInput.Toggle : CrouchInput.None,
-            Attack = Input.GetButtonDown("Fire1")
+            Attack = Input.GetButtonDown("Fire1"),
+            Dash = Input.GetKeyDown(KeyCode.E)
         };
         playerCharacter.UpdateInput(input);
         playerCharacter.UpdateBody(deltaTime);
