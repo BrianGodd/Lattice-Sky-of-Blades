@@ -15,6 +15,8 @@ public class GolemController : MonoBehaviour
 
     private GameObject nowRock, nowRock2;
 
+    public Animator cameraAnim, effectAnim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +50,17 @@ public class GolemController : MonoBehaviour
             StartCoroutine(CallGM(6f));
         }*/
         
+    }
+
+    public void StartRoar()
+    {
+        animator.SetTrigger("roar");
+    }
+
+    public void RoarEffect()
+    {
+        cameraAnim.SetTrigger("roar");
+        effectAnim.SetTrigger("roar");
     }
 
     public void AnimSpawn(int mode)
