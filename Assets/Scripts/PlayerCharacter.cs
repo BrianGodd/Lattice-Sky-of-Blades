@@ -45,11 +45,11 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float airAcceleration = 75f;
 
     [SerializeField] private float jumpSpeed = 5f;
+    [SerializeField] private float coyoteTime = 0.2f;
     [Range(0f, 1f)]
     [SerializeField] private float jumpSustainGravity = 0.4f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float slideStartSpeed = 25f;
-    [SerializeField] private float slideStartDownardSpeed = 25f;
     [SerializeField] private float slideEndSpeed = 15f;
     [SerializeField] private float slideFriction = 0.8f;
     [SerializeField] private float slideSteerAcceleration = 5f;
@@ -80,6 +80,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedCrouch;
     // private bool _lastRequestedCrouch;
     private float _timeSinceGrounded;
+    private float _timeSinceUngrounded;
+    private float _timeSinceJumpRequested;  
+    private bool _ungroundedDueToJump;
     private Vector3 _externalForce;
 
     public void Initialize()
@@ -95,7 +98,14 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         _requestedMovement = Vector3.ClampMagnitude(_requestedMovement, 1f);
         _requestedMovement = input.Rotation * _requestedMovement;
 
+
+        var wasRequestingJump = _requestedJump;
         _requestedJump = _requestedJump || input.Jump;
+        if(_requestedJump && !wasRequestingJump)
+        {
+            _timeSinceJumpRequested = 0f;
+        }
+
         _requestedJumpSustain = input.JumpSustain;
         _requestedCrouch = input.Crouch switch
         {
@@ -135,6 +145,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
 
         if (motor.GroundingStatus.IsStableOnGround)
         {
+            _timeSinceUngrounded = 0f;
+            _ungroundedDueToJump = false;
 
             var groundedMovement = motor.GetDirectionTangentToSurface
             (
@@ -160,8 +172,6 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                         direction: currentVelocity,
                         surfaceNormal: motor.GroundingStatus.GroundNormal
                     ) * slideSpeed;
-                    
-                    // currentVelocity += motor.CharacterUp * -slideStartDownardSpeed;
                 }
             }
 
@@ -216,6 +226,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         }
         else
         {
+            _timeSinceUngrounded += deltaTime;
             // Fast fall when crouch is pressed in air
             if (_requestedCrouch)
             {
@@ -257,12 +268,18 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         if (_requestedJump)
         {
             var grounded = motor.GroundingStatus.IsStableOnGround;
+            var canCayoteJump = _timeSinceUngrounded < coyoteTime && !_ungroundedDueToJump;
 
-            if(grounded)
+            if(grounded || canCayoteJump)
             {
+                if(!grounded)
+                {
+                    Debug.Log("Coyote Jump");
+                }
                 _requestedJump = false;
                 _requestedCrouch = false;
                 motor.ForceUnground(time: 0.1f);
+                _ungroundedDueToJump = true;
 
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 var targetVerticalSpeed = Mathf.Max(currentVerticalSpeed, jumpSpeed);
@@ -278,7 +295,10 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             }
             else
             {
-                _requestedJump = false;
+                //jump buffer
+                _timeSinceJumpRequested += deltaTime;
+                var canJumpLater = _timeSinceJumpRequested < coyoteTime;
+                _requestedJump = canJumpLater;
             }
         }
         
