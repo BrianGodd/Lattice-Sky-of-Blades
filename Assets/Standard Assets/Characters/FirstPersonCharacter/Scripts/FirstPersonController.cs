@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 
@@ -10,13 +9,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
-        public GameObject fade;
-        public bool m_Jump;
-        public bool isWalk;
-        public bool isFirst = true;
-        public bool m_IsWalking;
-        public float  m_WalkSpeed;
-        public float  m_RunSpeed;
+        [SerializeField] private bool m_IsWalking;
+        [SerializeField] private float m_WalkSpeed;
+        [SerializeField] private float m_RunSpeed;
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
@@ -32,9 +27,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
-        public Camera m_Camera, fir_Camera, thr_Camera;
-        private float ini_caY;
+        private Camera m_Camera;
+        private bool m_Jump;
         private float m_YRotation;
+        private CameraRefocus m_CameraRefocus;
         private Vector2 m_Input;
         private Vector3 m_MoveDir = Vector3.zero;
         private CharacterController m_CharacterController;
@@ -46,19 +42,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
-        public float addSpeed = 0f, addForwardSpeed = 0f;
-
         // Use this for initialization
         private void Start()
         {
-            fade.SetActive(true);
-            fir_Camera.GetComponent<Camera>().enabled = true;
-            thr_Camera.GetComponent<Camera>().enabled = false;
-            ini_caY = thr_Camera.transform.position.y;
-
             m_CharacterController = GetComponent<CharacterController>();
-            m_Camera = fir_Camera.GetComponent<Camera>();
+            m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
+            m_CameraRefocus = new CameraRefocus(m_Camera, transform, m_Camera.transform.localPosition);
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
             m_StepCycle = 0f;
@@ -72,21 +62,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                Debug.Log("press!");
-                isFirst = !isFirst;
-            }
-            fir_Camera.GetComponent<Camera>().enabled = isFirst;
-            thr_Camera.GetComponent<Camera>().enabled = !isFirst;
-            thr_Camera.gameObject.SetActive(!isFirst);
-            m_Camera = (isFirst)? fir_Camera.GetComponent<Camera>() : thr_Camera.GetComponent<Camera>();
-
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
             {
-                m_Jump = CrossPlatformInputManager.GetButtonUp("Jump");
+                m_Jump = Input.GetButtonDown("Jump");
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
@@ -102,12 +82,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
-
-            //if player falls below certain Y, reload scene
-            if(transform.position.y < -10f)
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-            }
         }
 
 
@@ -121,14 +95,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
-            float vertical = CrossPlatformInputManager.GetAxis("Vertical");
-            isWalk = (new Vector2(horizontal, vertical).magnitude > 0.1f);
-
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
+            Vector3 desiredMove = m_Camera.transform.forward*m_Input.y + m_Camera.transform.right*m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             RaycastHit hitInfo;
@@ -136,8 +106,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                m_CharacterController.height/2f);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            m_MoveDir.x = desiredMove.x*speed* (1f + addForwardSpeed);
-            m_MoveDir.z = desiredMove.z*speed* (1f + addForwardSpeed);
+            m_MoveDir.x = desiredMove.x*speed;
+            m_MoveDir.z = desiredMove.z*speed;
 
 
             if (m_CharacterController.isGrounded)
@@ -146,7 +116,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 if (m_Jump)
                 {
-                    m_MoveDir.y = m_JumpSpeed + addSpeed;
+                    m_MoveDir.y = m_JumpSpeed;
                     PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
@@ -208,8 +178,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void UpdateCameraPosition(float speed)
         {
-            if(!isFirst) return;
-
             Vector3 newCameraPosition;
             if (!m_UseHeadBob)
             {
@@ -229,22 +197,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 newCameraPosition.y = m_OriginalCameraPosition.y - m_JumpBob.Offset();
             }
             m_Camera.transform.localPosition = newCameraPosition;
+
+            m_CameraRefocus.SetFocusPoint();
         }
 
 
         private void GetInput(out float speed)
         {
             // Read input
-            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
-            float vertical = CrossPlatformInputManager.GetAxis("Vertical");
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
 
             bool waswalking = m_IsWalking;
 
-#if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
             m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
-#endif
+
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
@@ -268,6 +237,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void RotateView()
         {
             m_MouseLook.LookRotation (transform, m_Camera.transform);
+            m_CameraRefocus.GetFocusPoint();
         }
 
 
