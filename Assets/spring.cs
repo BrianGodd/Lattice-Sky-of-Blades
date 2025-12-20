@@ -8,6 +8,7 @@ public class spring : MonoBehaviour
     Vector3 forceV;
     [SerializeField] Transform from, to;
     [SerializeField] float force;
+    bool isCD = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,12 +22,21 @@ public class spring : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player" && !isCD)
         {
+
             PlayerCharacter.Instance.AddForce(forceV);
+            StartCoroutine(CD());
         }
+    }
+
+    IEnumerator CD()
+    {
+        isCD = true;
+        yield return new WaitForSeconds(0.2f);
+        isCD = false;
     }
 
 }
