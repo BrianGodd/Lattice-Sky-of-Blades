@@ -95,6 +95,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private float _timeSinceUngrounded;
     private float _timeSinceJumpRequested;  
     private bool _ungroundedDueToJump;
+    private bool _jumpBuffered;
     private Vector3 _externalForce;
     private float _dashTimer;
     private Vector3 _dashDirection;
@@ -303,19 +304,20 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 currentVelocity += motor.CharacterUp * (targetVerticalSpeed - currentVerticalSpeed);
 
                 // Apply forward boost if jumped within early jump window
-                if (_timeSinceGrounded < earlyJumpWindow &&( Mathf.Abs( currentVelocity.x)>minMagicSpeed|| Mathf.Abs(currentVelocity.z) > minMagicSpeed))
+                if (_timeSinceGrounded < earlyJumpWindow || _jumpBuffered)
                 {
                     Debug.Log("Early Jump Boost");
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
+                    if(_jumpBuffered) _jumpBuffered = false;
                 }
             }
             else
             {
                 //jump buffer
                 _timeSinceJumpRequested += deltaTime;
-                var canJumpLater = _timeSinceJumpRequested < coyoteTime;
-                _requestedJump = canJumpLater;
+                _jumpBuffered = _timeSinceJumpRequested < coyoteTime;
+                _requestedJump = _jumpBuffered;
             }
         }
         
