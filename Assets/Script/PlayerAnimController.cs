@@ -1,10 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerAnimController : MonoBehaviour
 {
+    /*
     public bool isScene1 = true, isHurt = false;
     public AudioSource Sword, Kirito;
     public AudioClip[] ATTSound;
@@ -84,7 +85,7 @@ public class PlayerAnimController : MonoBehaviour
             else RC.SetActive(false);
             
             if(isLeft && isSkill && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash")) LC.SetActive(true);
-            else LC.SetActive(false);*/
+            else LC.SetActive(false);*//*
 
             if(Input.GetMouseButtonDown(1))
             {
@@ -149,4 +150,5 @@ public class PlayerAnimController : MonoBehaviour
 
         animator.SetBool(anim, false);
     }
+*/
 }

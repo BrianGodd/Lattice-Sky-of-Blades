@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +6,7 @@ using TMPro;
 
 public class HPManager : MonoBehaviour
 {
+    /*
     public XRHealthBehavior XRHealthBehavior;
     public PlayerManager playerManager;
     public FrierenController frierenController;
@@ -53,5 +54,5 @@ public class HPManager : MonoBehaviour
             Blood.GetComponent<Image>().fillAmount = frierenController.HP/frierenController.MaxHP;
             Blood.GetComponent<Image>().color = new Color(255f/255f, frierenController.HP/frierenController.MaxHP, frierenController.HP/frierenController.MaxHP);
         }
-    }
+    }*/
 }
