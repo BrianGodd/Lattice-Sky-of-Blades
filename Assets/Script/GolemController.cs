@@ -17,6 +17,11 @@ public class GolemController : MonoBehaviour
 
     public Animator cameraAnim, effectAnim;
 
+    public GameObject stage1, stage2, stage3;
+    public GameObject stage2Trigger;
+    public PlayerCharacter player;
+    public Transform PlayerInitPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +59,24 @@ public class GolemController : MonoBehaviour
 
     public void StartRoar()
     {
+        StartCoroutine(PlayerReset());
+        stage1.SetActive(false);
+        stage2.SetActive(true);
+        stage2Trigger.SetActive(false);
         animator.SetTrigger("roar");
+    }
+
+    IEnumerator PlayerReset()
+    {
+        //lerp player position to init pos over 1 second
+        float elapsedTime = 0f;
+        Vector3 startingPos = player.transform.position;
+        while (elapsedTime < 1f)
+        {
+            player.SetTransform(Vector3.Lerp(startingPos, PlayerInitPos.position, (elapsedTime / 1f)));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public void RoarEffect()
