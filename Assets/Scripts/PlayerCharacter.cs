@@ -106,6 +106,12 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float minMagicSpeed;
     public void Initialize()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         motor.CharacterController = this;
     }
 
