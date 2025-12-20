@@ -103,6 +103,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private float _dashTimer;
     private Vector3 _dashDirection;
     private Vector3 _dashVelocity;
+    private Vector3 _dashBufferedForces;
 
     [SerializeField] private float minMagicSpeed;
 
@@ -343,21 +344,16 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             
             if (_dashTimer >= dashDuration)
             {
-                // Preserve only external forces by subtracting the base dash velocity
-                // var externalVelocity = currentVelocity - _dashVelocity;
-                // currentVelocity = externalVelocity;
-                currentVelocity = Vector3.zero;
+                // Apply any accumulated buffered forces from during the dash
+                currentVelocity = _dashBufferedForces;
+                _dashBufferedForces = Vector3.zero;
                 _state.Stance = Stance.Stand;
                 Debug.Log("End Dash");
             }
             else
             {
-                // var normalizedTime = _dashTimer / dashDuration;
-                // var curveMultiplier = dashSpeedCurve.Evaluate(normalizedTime);
-                // var targetSpeed = dashSpeed * curveMultiplier;
-                
                 _dashVelocity = _dashDirection * dashSpeed;
-                currentVelocity = _dashVelocity;
+                currentVelocity = _dashVelocity + _dashBufferedForces;
             }
         }
         
@@ -385,12 +381,21 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             
             _dashDirection = desiredDashDirection;
             _dashVelocity = Vector3.zero;
+            _dashBufferedForces = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
 
         // Apply external forces
         if(_externalForce != Vector3.zero){
-            currentVelocity += _externalForce;
+            if(_state.Stance == Stance.Dash)
+            {
+                // Accumulate buffered forces during dash to apply when dash ends
+                _dashBufferedForces += _externalForce;
+            }
+            else
+            {
+                currentVelocity += _externalForce;
+            }
             _externalForce = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
