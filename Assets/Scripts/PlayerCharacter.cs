@@ -36,6 +36,8 @@ public struct CharacterInput
 }
 public class PlayerCharacter : MonoBehaviour, ICharacterController
 {
+    public static PlayerCharacter Instance { get; private set; }
+
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
     [SerializeField] private Transform cameraTarget;
