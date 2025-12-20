@@ -36,8 +36,6 @@ public struct CharacterInput
 }
 public class PlayerCharacter : MonoBehaviour, ICharacterController
 {
-    public static PlayerCharacter Instance { get; private set; }
-
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
     [SerializeField] private Transform cameraTarget;
@@ -97,6 +95,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private float _timeSinceUngrounded;
     private float _timeSinceJumpRequested;  
     private bool _ungroundedDueToJump;
+    private bool _jumpBuffered;
     private Vector3 _externalForce;
     private float _dashTimer;
     private Vector3 _dashDirection;
@@ -105,12 +104,6 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float minMagicSpeed;
     public void Initialize()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
         motor.CharacterController = this;
     }
 
@@ -258,7 +251,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
-                //_requestedCrouch = false;
+                _requestedCrouch = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
@@ -311,20 +304,20 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 currentVelocity += motor.CharacterUp * (targetVerticalSpeed - currentVerticalSpeed);
 
                 // Apply forward boost if jumped within early jump window
-                if (_timeSinceGrounded < earlyJumpWindow &&( Mathf.Abs( currentVelocity.x)>minMagicSpeed|| Mathf.Abs(currentVelocity.z) > minMagicSpeed))
+                if (_timeSinceGrounded < earlyJumpWindow || _jumpBuffered)
                 {
                     Debug.Log("Early Jump Boost");
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
                     currentVelocity += forward * earlyJumpForwardBoost;
-                    GetComponent<PlayerPlatformer_New>().MagicJump();
+                    if(_jumpBuffered) _jumpBuffered = false;
                 }
             }
             else
             {
                 //jump buffer
                 _timeSinceJumpRequested += deltaTime;
-                var canJumpLater = _timeSinceJumpRequested < coyoteTime;
-                _requestedJump = canJumpLater;
+                _jumpBuffered = _timeSinceJumpRequested < coyoteTime;
+                _requestedJump = _jumpBuffered;
             }
         }
         
