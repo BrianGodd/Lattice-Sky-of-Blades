@@ -2020,6 +2020,38 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &576957840 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2867869624963004166, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2441599681921501207}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &576957842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576957840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0.1, y: 0.5, z: 0.3}
+  ShoulderOffset: {x: 0.5, y: 2, z: -2}
+  VerticalArmLength: 0.4
+  CameraSide: 1
+  CameraDistance: 2
+  AvoidObstacles:
+    Enabled: 0
+    CollisionFilter:
+      serializedVersion: 2
+      m_Bits: 1
+    IgnoreTag: 
+    CameraRadius: 0.2
+    DampingIntoCollision: 0
+    DampingFromCollision: 0.5
 --- !u!1 &583800473
 GameObject:
   m_ObjectHideFlags: 0
@@ -5976,10 +6008,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8999297173485899034, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999297173485899034, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999297173485899034, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3280561858609174550, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2867869624963004166, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 576957842}
   m_SourcePrefab: {fileID: 100100000, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

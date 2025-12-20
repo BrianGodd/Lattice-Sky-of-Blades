@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
         };
         playerCharacter.UpdateInput(input);
         playerCharacter.UpdateBody(deltaTime);
-        animator.SetBool("attack", input.Attack);
+        //animator.SetBool("attack", input.Attack);
         // cameraSpring.UpdateSpring(deltaTime, Camera.main.transform.up);
     }
 }

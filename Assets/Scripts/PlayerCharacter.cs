@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using KinematicCharacterController;
 using System;
 using Unity.VisualScripting;
@@ -99,6 +99,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private float _dashTimer;
     private Vector3 _dashDirection;
 
+    [SerializeField] private float minMagicSpeed;
     public void Initialize()
     {
         motor.CharacterController = this;
@@ -301,7 +302,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 currentVelocity += motor.CharacterUp * (targetVerticalSpeed - currentVerticalSpeed);
 
                 // Apply forward boost if jumped within early jump window
-                if (_timeSinceGrounded < earlyJumpWindow)
+                if (_timeSinceGrounded < earlyJumpWindow &&( Mathf.Abs( currentVelocity.x)>minMagicSpeed|| Mathf.Abs(currentVelocity.z) > minMagicSpeed))
                 {
                     Debug.Log("Early Jump Boost");
                     var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
