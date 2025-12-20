@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using KinematicCharacterController;
 using System;
+using Unity.VisualScripting;
 
 
 public enum CrouchInput
@@ -65,6 +66,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [Range(0f, 1f)]
     [SerializeField] private float crouchCameraTargetHeight = 0.7f;
 
+    [Header("Debug")]
+    [SerializeField] private Vector3 testForce = new Vector3(0, 10, 0);
+
     private CharacterState _state;
     private CharacterState _tempState;
     private CharacterState _lastState;
@@ -76,10 +80,18 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedCrouch;
     // private bool _lastRequestedCrouch;
     private float _timeSinceGrounded;
+    private Vector3 _externalForce;
+    public static PlayerCharacter Instance;
 
     [SerializeField] private float minMagicSpeed;
     public void Initialize()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         motor.CharacterController = this;
     }
 
@@ -277,6 +289,13 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 _requestedJump = false;
             }
         }
+        
+        // Apply external forces
+        if(_externalForce != Vector3.zero){
+            currentVelocity += _externalForce;
+            _externalForce = Vector3.zero;
+            motor.ForceUnground(0.1f);
+        }
     }
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
@@ -351,7 +370,26 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
 
     void Update()
     {
-
+        // if (Input.GetKeyDown(KeyCode.K))
+        // {
+        //     AddForce(testForce);
+        // }
     }
+
+    public void SetTransform(Vector3 position, Quaternion? rotation = null)
+    {
+        motor.SetPosition(position);
+        if (rotation.HasValue)
+        {
+            motor.SetRotation(rotation.Value);
+        }
+        motor.BaseVelocity = Vector3.zero;
+    }
+
+    public void AddForce(Vector3 force)
+    {
+        _externalForce += force;
+    }
+
 
 }
