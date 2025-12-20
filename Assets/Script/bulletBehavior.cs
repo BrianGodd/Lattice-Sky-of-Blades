@@ -5,7 +5,9 @@ using UnityEngine;
 public class bulletBehavior : MonoBehaviour
 {
 
-    float Maxtime = 8f; 
+    float Maxtime = 8f;
+    [SerializeField] bool isStage0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,14 @@ public class bulletBehavior : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             print("Player Hit!");
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            if (!isStage0)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            }
+            else
+            {
+                shootgameMannger.instance.getHit();
+            }
             //Destroy(other.gameObject);
             //Destroy(this.gameObject);
         }
