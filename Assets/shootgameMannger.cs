@@ -6,8 +6,9 @@ public class shootgameMannger : MonoBehaviour
 {
     public static shootgameMannger instance;
     [SerializeField] CacTime timer;
-    [SerializeField] GameObject shootpoint;
-    bool islittlegame = false;
+    [SerializeField] GameObject shootpoint,player,tpto;
+    bool islittlegame = false,tpflag;
+    [SerializeField] float waittime;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,9 +28,15 @@ public class shootgameMannger : MonoBehaviour
 
     public void getHit()
     {
-        timer.reachEnd2();
-        shootpoint.SetActive(false);
-        islittlegame = false;
+        if (!tpflag)
+        {
+            timer.reachEnd2();
+            shootpoint.SetActive(false);
+            islittlegame = false;
+            tpflag = true;
+            StartCoroutine(tpCount());
+        }
+        
     }
     private void OnTriggerExit(Collider other)
     {
@@ -44,5 +51,10 @@ public class shootgameMannger : MonoBehaviour
         }
         
     }
-    
+    IEnumerator tpCount()
+    {
+        yield return new WaitForSeconds(waittime);
+        player.GetComponent<PlayerCharacter>().SetTransform(tpto.transform.position);
+        tpflag = false;
+    }
 }
