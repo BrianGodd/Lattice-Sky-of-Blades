@@ -258,7 +258,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
-                _requestedCrouch = false;
+                //_requestedCrouch = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
