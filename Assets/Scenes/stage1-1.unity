@@ -29005,6 +29005,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
+      propertyPath: gravity
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: jumpSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
       propertyPath: minMagicSpeed
       value: 3
       objectReference: {fileID: 0}
