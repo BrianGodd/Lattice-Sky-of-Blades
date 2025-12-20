@@ -344,8 +344,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             if (_dashTimer >= dashDuration)
             {
                 // Preserve only external forces by subtracting the base dash velocity
-                var externalVelocity = currentVelocity - _dashVelocity;
-                currentVelocity = externalVelocity;
+                // var externalVelocity = currentVelocity - _dashVelocity;
+                // currentVelocity = externalVelocity;
+                currentVelocity = Vector3.zero;
                 _state.Stance = Stance.Stand;
                 Debug.Log("End Dash");
             }
