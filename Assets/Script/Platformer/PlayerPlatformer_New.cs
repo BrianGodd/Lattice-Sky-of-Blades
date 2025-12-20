@@ -15,9 +15,17 @@ public class PlayerPlatformer_New : MonoBehaviour
     public KinematicCharacterMotor motor;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         
+    }
+
+    void Start()
+    {
+        if (PlayerCharacter.Instance != null)
+        {
+            PlayerCharacter.Instance.OnMagicJump += MagicJump;
+        }
     }
 
     // Update is called once per frame
