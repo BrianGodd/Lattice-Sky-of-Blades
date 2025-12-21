@@ -7,6 +7,7 @@ TagManager:
   - sword
   - FSkill
   - QuickAttack
+  - KSkill
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - PostProcessing
   - MMD
   - MainGround
-  - 
+  - Fade
   - 
   - 
   - 
