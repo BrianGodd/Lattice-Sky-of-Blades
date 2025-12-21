@@ -79,6 +79,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float dashDuration = 0.2f;
     // [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+    [Header("External Forces")]
+    [SerializeField] private float externalForceFriction = 60f;
 
     [Header("Debug")]
     [SerializeField] private Vector3 testForce = new Vector3(0, 10, 0);
@@ -92,8 +94,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedJump;
     private bool _requestedJumpSustain;
     private bool _requestedCrouch;
+    private bool _lastRequestedCrouch;
     private bool _requestedDash;
-    // private bool _lastRequestedCrouch;
     private float _timeSinceGrounded;
     private float _timeSinceUngrounded;
     private float _timeSinceJumpRequested;  
@@ -104,8 +106,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private Vector3 _dashDirection;
     private Vector3 _dashVelocity;
     private Vector3 _dashBufferedForces;
+    private Vector3 _externalVelocity;
 
-    [SerializeField] private float minMagicSpeed;
+    // [SerializeField] private float minMagicSpeed;
 
     public void Awake()
     {
@@ -138,6 +141,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         }
 
         _requestedJumpSustain = input.JumpSustain;
+        
+        _lastRequestedCrouch = _requestedCrouch;
         _requestedCrouch = input.Crouch switch
         {
             CrouchInput.Toggle => !_requestedCrouch,
@@ -213,7 +218,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 var speed = _state.Stance == Stance.Stand ? walkSpeed : crouchSpeed;
                 var response = _state.Stance == Stance.Stand ? walkResponse : crouchResponse;
 
-                var targetVelocity = groundedMovement * speed;
+                var targetVelocity = groundedMovement * speed + _externalVelocity;
 
                 
                 var moveVelocity = Vector3.Lerp
@@ -259,13 +264,12 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         else
         {
             _timeSinceUngrounded += deltaTime;
-            // Fast fall when crouch is pressed in air
-            if (_requestedCrouch)
+            // Fast fall when crouch is pressed in air (only on new press)
+            if (_requestedCrouch && !_lastRequestedCrouch)
             {
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
-                //_requestedCrouch = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
@@ -394,11 +398,27 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             }
             else
             {
-                currentVelocity += _externalForce;
+                _externalVelocity += _externalForce;
             }
             _externalForce = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
+        
+        // Apply external velocity universally across all states (except dash)
+        if (_state.Stance != Stance.Dash && _externalVelocity.sqrMagnitude > 0.01f)
+        {
+            currentVelocity += _externalVelocity;
+            Debug.Log("Applying External Velocity: "+_externalVelocity);
+            // Apply friction to external velocity based on state
+            _externalVelocity -= _externalVelocity * (externalForceFriction * deltaTime);
+            
+            if (_externalVelocity.sqrMagnitude < 0.01f)
+            {
+                _externalVelocity = Vector3.zero;
+            }
+        }
+
+        // Debug.Log(_requestedCrouch);
     }
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
