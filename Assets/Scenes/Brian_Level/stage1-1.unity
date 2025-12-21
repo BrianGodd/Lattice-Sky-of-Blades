@@ -29160,83 +29160,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1694095569287270976, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
-      propertyPath: Lens.FieldOfView
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.5035286
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.768585
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.98836154
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.15212333
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2065260339056939792, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265225301764254990, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: field of view
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265225301764254990, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_BackGroundColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265225301764254990, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265225301764254990, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2265225301764254990, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: effectAnim
+      value: 
+      objectReference: {fileID: 1205100199}
     - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: fastFallSpeed
-      value: 40
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
-      propertyPath: minMagicSpeed
-      value: 3
+      propertyPath: crouchSlamSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: crouchSlamForwardSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4372234626777670159, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}

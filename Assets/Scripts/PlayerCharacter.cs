@@ -72,8 +72,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [Header("Early Jump")]
     [SerializeField] private float earlyJumpWindow = 0.3f;
     [SerializeField] private float earlyJumpForwardBoost = 10f;
-    [Header("Fast Fall")]
-    [SerializeField] private float fastFallSpeed = 20f;
+    [Header("Crouch Slam")]
+    [SerializeField] private float crouchSlamSpeed = 50f;
+    [SerializeField] private float crouchSlamForwardSpeed = 5f;
     
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 40f;
@@ -201,7 +202,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             _timeSinceUngrounded = 0f;
             _ungroundedDueToJump = false;
             
-            // Clear crouch just pressed when grounded to prevent false fast fall triggers
+            // Clear crouch just pressed when grounded to prevent false crouch slam triggers
             _crouchJustPressed = false;
 
             var groundedMovement = motor.GetDirectionTangentToSurface
@@ -283,12 +284,17 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         else
         {
             _timeSinceUngrounded += deltaTime;
-            // Fast fall when crouch is pressed in air (only on new press)
+            // Crouch slam when crouch is pressed in air (only on new press)
             if (_crouchJustPressed)
             {
-                Debug.Log("Fast Fall");
+                Debug.Log("Crouch Slam");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
-                currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
+                currentVelocity += motor.CharacterUp * (-crouchSlamSpeed - currentVerticalSpeed);
+                
+                // Add forward speed
+                var forward = Vector3.ProjectOnPlane(_requestedRotation * Vector3.forward, motor.CharacterUp).normalized;
+                currentVelocity += forward * crouchSlamForwardSpeed;
+                
                 _crouchJustPressed = false;
             }
 
