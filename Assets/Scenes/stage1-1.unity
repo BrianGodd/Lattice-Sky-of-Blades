@@ -416,12 +416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a27f585b94d0429181c5c6298112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XRHealthBehavior: {fileID: 0}
-  playerManager: {fileID: 2016401632}
-  frierenController: {fileID: 0}
-  mimicController: {fileID: 0}
-  Blood: {fileID: 675383319}
-  HPUI: {fileID: 297411154}
 --- !u!114 &43875015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20055,6 +20049,11 @@ MonoBehaviour:
   speed: 50
   gap: 5
   offset: 0
+  minGap: 0
+  maxGap: 0
+  Yoffset: 0
+  isRandom: 0
+  isYrandom: 0
 --- !u!4 &477188144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 551325782620807136, guid: b82b234021f91884bba8c8cece952962,
@@ -21201,21 +21200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d875c461194ea74097cd4853f963ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isScene1: 0
-  isHurt: 0
-  Sword: {fileID: 7696892233888874027}
-  Kirito: {fileID: 7741764482125250159}
-  ATTSound:
-  - {fileID: 8300000, guid: 75dbec2de2ffcd94aab387eac52be3dd, type: 3}
-  - {fileID: 8300000, guid: ac2e4647f5b7c974abd7910588172e18, type: 3}
-  - {fileID: 8300000, guid: b94f7381b3be81e47956de1267fd53ca, type: 3}
-  animator: {fileID: 7741764482125250158}
-  FPC: {fileID: 2016401624}
-  StarBust: {fileID: 4412877183661391353, guid: cc6317e7e4832674ea3506d917d18ccc,
-    type: 3}
-  hintT: {fileID: 4944086313704854158, guid: 6f884dd847bacbd43ac29759e0d364ad, type: 3}
-  LC: {fileID: 270625588}
-  RC: {fileID: 904927668}
 --- !u!1001 &526385298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27533,12 +27517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a27f585b94d0429181c5c6298112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XRHealthBehavior: {fileID: 0}
-  playerManager: {fileID: 2016401632}
-  frierenController: {fileID: 0}
-  mimicController: {fileID: 0}
-  Blood: {fileID: 1636776081}
-  HPUI: {fileID: 778299490}
 --- !u!1 &855566745 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6389019010045659241, guid: f1e9dbcb8247678419d7cbe19011bd09,
@@ -28880,27 +28858,27 @@ PrefabInstance:
     - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.16500092
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.5035286
       objectReference: {fileID: 0}
     - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.2999992
+      value: -4.768585
       objectReference: {fileID: 0}
     - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.98836154
       objectReference: {fileID: 0}
     - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.15212333
       objectReference: {fileID: 0}
     - target: {fileID: 1980112988968962222, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
@@ -29040,17 +29018,17 @@ PrefabInstance:
     - target: {fileID: 8999297173485899034, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.16500092
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8999297173485899034, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.5035286
       objectReference: {fileID: 0}
     - target: {fileID: 8999297173485899034, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.2999992
+      value: -4.768585
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3280561858609174550, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e, type: 3}
@@ -32465,12 +32443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375a27f585b94d0429181c5c6298112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XRHealthBehavior: {fileID: 0}
-  playerManager: {fileID: 0}
-  frierenController: {fileID: 1601667721}
-  mimicController: {fileID: 0}
-  Blood: {fileID: 615414171}
-  HPUI: {fileID: 1976179052}
 --- !u!114 &1290345887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41801,6 +41773,8 @@ MonoBehaviour:
   - {fileID: 283220498}
   frontForce: 2000
   UpForce: -700
+  cameraAnim: {fileID: 0}
+  effectAnim: {fileID: 0}
 --- !u!95 &1594817138
 Animator:
   serializedVersion: 5
@@ -52729,6 +52703,8 @@ MonoBehaviour:
   origin: {fileID: 1710019066}
   ltarget: {fileID: 1799054199}
   rtarget: {fileID: 635266904}
+  angleOffset: 10
+  waves: 3
   shootMode: 3
   tOffset: 0
 --- !u!4 &1741713079 stripped
@@ -55831,15 +55807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9cc36af7095b54186755dc11bcae55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 758324382}
-  GameManager: {fileID: 1512111939}
-  PlayerAnimController: {fileID: 525051603}
-  MaxHP: 18000
-  HP: 0
-  nextFrameTime: 0
-  frameTime: 0.2
-  hurtTime: 3
-  nowTime: 3
 --- !u!114 &2016401633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55852,11 +55819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd768816f98243f478ed59ec5628a5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGround: 0
-  isMagicJump: 0
-  playerCamera: {fileID: 758324375}
-  effectAnim: {fileID: 1205100199}
-  speedPP: {fileID: 1793081443}
 --- !u!136 &2016401637
 CapsuleCollider:
   m_ObjectHideFlags: 0
