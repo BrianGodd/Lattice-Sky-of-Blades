@@ -216,7 +216,7 @@ MonoBehaviour:
   VerticalAxis:
     Value: 17.5
     Center: 17.5
-    Range: {x: -90, y: 90}
+    Range: {x: -89, y: 89}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -676,7 +676,6 @@ MonoBehaviour:
   dashSpeed: 40
   dashDuration: 0.2
   testForce: {x: 0, y: 10, z: 0}
-  minMagicSpeed: 3
 --- !u!135 &6952747627785151574
 SphereCollider:
   m_ObjectHideFlags: 0
