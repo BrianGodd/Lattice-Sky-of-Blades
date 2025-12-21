@@ -91525,11 +91525,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.04353532
       objectReference: {fileID: 0}
-    - target: {fileID: 4255292195133922168, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
-        type: 3}
-      propertyPath: externalForceFriction
-      value: 40
-      objectReference: {fileID: 0}
     - target: {fileID: 4372234626777670159, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_Name
