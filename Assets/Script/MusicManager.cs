@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class MusicManager : MonoBehaviour
 
     void Awake()
     {
+
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -15,7 +17,19 @@ public class MusicManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    
+    void Update()
+    {
+        
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
+        if(sceneIndex == 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+    }
     public void PlaySFX3D(AudioClip clip, Vector3 position, float volume = 1f)
     {
         if (clip == null) return;

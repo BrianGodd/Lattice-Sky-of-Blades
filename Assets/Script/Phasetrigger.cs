@@ -25,7 +25,7 @@ public class Phasetrigger : MonoBehaviour
 
             phaseMannger.changeState(Tostate); // Change to phase 0 when player enters the trigger
             print("taggg");
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public Camera fir_Camera, thr_Camera;
     public FirstPersonController FPC;
     public Animator asuna, frieren, myAnim, fade;
-    public GameObject UIHint, UISit, MainC;
+    public GameObject UIHint, UISit, MainC, hint;
     public Transform ini_rot, VirtualCam;
     public int mode = 0; //0:nothing, 1:sit, 3:hello
     public bool isFirst = true;
@@ -17,15 +17,60 @@ public class GameManager : MonoBehaviour
     //public JoyStickController joyStickController;
 
     public int nowLevel = 1;
+    public GameObject Reward1, Reward2, Ending;
+
+    public bool isTraining = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(isTraining) return;
+
+        if(LevelCompletionManager.Instance.IsLevelCompleted("Level1")) nowLevel = 2;
+        if(LevelCompletionManager.Instance.IsLevelCompleted("Level2")) nowLevel = 3;
+        if(!LevelCompletionManager.Instance.IsLevelRewarded("Level1") && LevelCompletionManager.Instance.IsLevelCompleted("Level1"))
+        {
+            LevelCompletionManager.Instance.RewardLevel("Level1");
+            ShowReward("Level1");
+        }
+        if(!LevelCompletionManager.Instance.IsLevelRewarded("Level2") && LevelCompletionManager.Instance.IsLevelCompleted("Level2"))
+        {
+            LevelCompletionManager.Instance.RewardLevel("Level2");
+            ShowReward("Level2");
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isTraining) return;
+        
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Ending.SetActive(false);
+            GetComponent<AudioSource>().Play();
+        }
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            LevelCompletionManager.Instance.ResetAllLevels();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(Reward1.active) 
+            {
+                Reward1.SetActive(false);
+                GetComponent<AudioSource>().Play();
+            }
+            if(Reward2.active) 
+            {
+                Reward2.SetActive(false);
+                GetComponent<AudioSource>().Play();
+            }
+            hint.SetActive(false);
+        }
         /*if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("press!");
@@ -81,6 +126,12 @@ public class GameManager : MonoBehaviour
                     myAnim.Play("waving");
                 }
                 break;
+            case 5:
+                asuna.Play("hello");
+                fade.SetBool("fadein", true);
+                StartCoroutine(GoToHomeScene(1.5f));
+                break;
+
         }
     }
 
@@ -101,10 +152,35 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
     }
 
-    IEnumerator GoToLevelScene(float time)
+    IEnumerator GoToHomeScene(float time)
     {
         yield return new WaitForSeconds(time);
 
-        SceneManager.LoadScene(nowLevel);
+        SceneManager.LoadScene(1);
+    }
+
+    IEnumerator GoToLevelScene(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if(nowLevel == 1) SceneManager.LoadScene(2);
+        else if(nowLevel == 2) SceneManager.LoadScene(5);
+        else if(nowLevel == 3)
+        {
+            Ending.SetActive(true);
+        }
+    }
+
+    public void ShowReward(string level)
+    {
+        hint.SetActive(true);
+        switch(level)
+        {
+            case "Level1":
+                Reward1.SetActive(true);
+                break;
+            case "Level2":
+                Reward2.SetActive(true);
+                break;
+        }
     }
 }

@@ -85,6 +85,7 @@ public class GolemController : MonoBehaviour
                 break;
         }
         animator.SetTrigger("roar");
+        GetComponent<AudioSource>().Play();
     }
 
     IEnumerator PlayerReset()

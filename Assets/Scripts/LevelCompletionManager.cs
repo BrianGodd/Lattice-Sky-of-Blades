@@ -10,6 +10,7 @@ public class LevelCompletionData
     public float completionTime;
     public DateTime completionDate;
     public int attempts;
+    public bool isReward;
     
     public LevelCompletionData(string name)
     {
@@ -18,6 +19,7 @@ public class LevelCompletionData
         completionTime = 0f;
         completionDate = DateTime.MinValue;
         attempts = 0;
+        isReward = false;
     }
 }
 
@@ -63,6 +65,22 @@ public class LevelCompletionManager : MonoBehaviour
         
         Debug.Log($"Level '{levelName}' completed in {completionTime:F2} seconds");
     }
+
+    public void RewardLevel(string levelName)
+    {
+        if (!_levelData.ContainsKey(levelName))
+        {
+            _levelData[levelName] = new LevelCompletionData(levelName);
+        }
+        
+        var data = _levelData[levelName];
+        data.isReward = true;
+        
+        SaveLevelData(levelName);
+        //OnLevelRewarded?.Invoke(levelName);
+        
+        Debug.Log($"Level '{levelName}' Rewarded");
+    }
     
     /// <summary>
     /// Record a level attempt
@@ -84,6 +102,11 @@ public class LevelCompletionManager : MonoBehaviour
     public bool IsLevelCompleted(string levelName)
     {
         return _levelData.ContainsKey(levelName) && _levelData[levelName].isCompleted;
+    }
+
+    public bool IsLevelRewarded(string levelName)
+    {
+        return _levelData.ContainsKey(levelName) && _levelData[levelName].isReward;
     }
     
     /// <summary>

@@ -33,7 +33,7 @@ public class bulletBehavior : MonoBehaviour
             print("Player Hit!");
             if (!isStage0)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(1 + GameMaster.instance.levelIndex);
+                UnityEngine.SceneManagement.SceneManager.LoadScene(2 + GameMaster.instance.levelIndex);
             }
             else
             {

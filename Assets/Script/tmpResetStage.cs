@@ -13,9 +13,9 @@ public class tmpResetStage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < -10)
+        if (transform.position.y < GameMaster.instance.DeadY)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1 + GameMaster.instance.levelIndex);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(2 + GameMaster.instance.levelIndex);
 
         }
     }

@@ -49,7 +49,12 @@ public class shootLight : MonoBehaviour
                 circleObj = Instantiate(readyCircle, targetPos, quaternion_ti);
                 
             }
-                yield return new WaitForSeconds(chargeTime);
+            if(!DragonController.Instance.isAttack)
+            {
+                DragonController.Instance.isAttack = true;
+                DragonController.Instance.animator.SetTrigger("start");
+            }
+            yield return new WaitForSeconds(chargeTime);
             lightingObj = Instantiate(lightnigBolt, targetPos , Quaternion.Euler(90, 0, 0));
             if (ishit())
             {
@@ -65,7 +70,7 @@ public class shootLight : MonoBehaviour
     void hit()
     {
         print("hit");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1 + GameMaster.instance.levelIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2 + GameMaster.instance.levelIndex);
     }
 
     bool ishit()
