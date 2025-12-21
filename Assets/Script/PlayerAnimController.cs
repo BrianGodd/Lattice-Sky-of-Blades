@@ -5,12 +5,9 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerAnimController : MonoBehaviour
 {
-    /*
-    public bool isScene1 = true, isHurt = false;
-    public AudioSource Sword, Kirito;
+    /*public AudioSource Sword, Kirito;
     public AudioClip[] ATTSound;
     public Animator animator;
-    public FirstPersonController FPC;
     public GameObject StarBust, hintT, LC, RC;
     float skillCount = 0, needCount = 36;
     bool isSkill = false, isLeft = true;
@@ -18,13 +15,17 @@ public class PlayerAnimController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (PlayerCharacter.Instance != null)
+        {
+            PlayerCharacter.Instance.OnJump += PlayJumpSound;
+            PlayerCharacter.Instance.OnLand += PlayLandingSound;
+        }   
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(FPC.isWalk && !FPC.m_Jump)
+        if(PlayerCharacter.Instance.IsWalking)
         {
             animator.SetBool("run", true);
             animator.SetBool("jump", false);
@@ -85,7 +86,7 @@ public class PlayerAnimController : MonoBehaviour
             else RC.SetActive(false);
             
             if(isLeft && isSkill && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash")) LC.SetActive(true);
-            else LC.SetActive(false);*//*
+            else LC.SetActive(false);
 
             if(Input.GetMouseButtonDown(1))
             {
@@ -149,6 +150,5 @@ public class PlayerAnimController : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         animator.SetBool(anim, false);
-    }
-*/
+    }*/
 }
