@@ -50,7 +50,7 @@ public class CacTime : MonoBehaviour
     public void reachEnd2()
     {
         countflag = false;
-        besttimeBuillet = Mathf.Min(besttimeBuillet, timer);
+        besttimeBuillet = Mathf.Max(besttimeBuillet, timer);
         Text.text = "Time : " + timer.ToString("F3") + "\nBest Time : " + besttimeBuillet.ToString("F3");
     }
 }
