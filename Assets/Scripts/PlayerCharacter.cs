@@ -191,6 +191,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         {
             _timeSinceUngrounded = 0f;
             _ungroundedDueToJump = false;
+            
+            // Clear crouch just pressed when grounded to prevent false fast fall triggers
+            _crouchJustPressed = false;
 
             var groundedMovement = motor.GetDirectionTangentToSurface
             (
@@ -388,7 +391,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             //     // When same direction (1), use current speed; when different (0 or negative), use min speed
             //     var blendFactor = Mathf.Max(0f, directionDot);
             //     var effectiveDashSpeed = Mathf.Lerp(dashMinSpeed, currentSpeed, blendFactor);
-            //     dashSpeed = effectiveDashSpeed;
+            //     dashSpeed = effectiveDashSpeed;  
             // }
             
             _dashDirection = desiredDashDirection;
