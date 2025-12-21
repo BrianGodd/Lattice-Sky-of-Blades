@@ -18,15 +18,20 @@ public class GolemController : MonoBehaviour
     public Animator cameraAnim, effectAnim;
 
     public GameObject stage1, stage2, stage3;
-    public GameObject stage2Trigger;
+    public GameObject stage2Trigger, stage3Trigger, stage3Bullet;
     public PlayerCharacter player;
-    public Transform PlayerInitPos;
+    public Transform[] PlayerInitPos;
 
     // Start is called before the first frame update
     void Start()
     {
         HP = MaxHP;
         spelltime = Random.Range(3,5);
+        
+        if(GameMaster.instance.levelIndex >= 1)
+        {
+            animator.SetTrigger("start");
+        }
     }
 
     // Update is called once per frame
@@ -60,9 +65,25 @@ public class GolemController : MonoBehaviour
     public void StartRoar()
     {
         StartCoroutine(PlayerReset());
-        stage1.SetActive(false);
-        stage2.SetActive(true);
-        stage2Trigger.SetActive(false);
+        switch (GameMaster.instance.levelIndex)
+        {
+            case 0:
+                stage1.SetActive(false);
+                stage2.SetActive(true);
+                stage2Trigger.SetActive(false);
+                break;
+            case 1:
+                stage2.SetActive(false);
+                stage3.SetActive(true);
+                stage3Trigger.SetActive(false);
+                stage3Bullet.SetActive(false);
+                break;
+            case 2:
+                GameMaster.instance.Win();
+                break;
+            default:
+                break;
+        }
         animator.SetTrigger("roar");
     }
 
@@ -73,10 +94,18 @@ public class GolemController : MonoBehaviour
         Vector3 startingPos = player.transform.position;
         while (elapsedTime < 1f)
         {
-            player.SetTransform(Vector3.Lerp(startingPos, PlayerInitPos.position, (elapsedTime / 1f)));
+            player.SetTransform(Vector3.Lerp(startingPos, PlayerInitPos[GameMaster.instance.levelIndex].position, (elapsedTime / 0.5f)));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        if(GameMaster.instance.levelIndex == 0) stage2Trigger.SetActive(true);
+        if(GameMaster.instance.levelIndex == 1) 
+        {
+            stage3Trigger.SetActive(true);
+            stage3Bullet.SetActive(true);
+        }
+        GameMaster.instance.levelIndex++;
+        animator.SetTrigger("start");
     }
 
     public void RoarEffect()
@@ -87,6 +116,7 @@ public class GolemController : MonoBehaviour
 
     public void AnimSpawn(int mode)
     {
+        Debug.Log("Spawn Rock at mode " + mode);
         nowRock = Instantiate(Rocks[0]);
         nowRock.transform.position = RockAnchor[mode].position;
         nowRock.transform.parent = RockAnchor[mode];
@@ -132,7 +162,7 @@ public class GolemController : MonoBehaviour
         rb2.AddTorque(Vector3.up * 100f, ForceMode.Acceleration);
         rb2.AddForce((RockAnchor[0].forward - RockAnchor[0].right*0.3f) * frontForce + transform.up * UpForce);
         StartCoroutine(SmallRock(nowRock2));
-        StartCoroutine(LocRock(nowRock2, Random.Range(4f, 6f)));
+        StartCoroutine(LocRock(nowRock2, Random.Range(6f, 8f)));
         Destroy(nowRock2, 10f);
     }
 
@@ -150,7 +180,7 @@ public class GolemController : MonoBehaviour
 
     IEnumerator SmallRock(GameObject rock)
     {
-        Vector3 targetScale = new Vector3(0.4f, 0.4f, 0.4f);
+        Vector3 targetScale = new Vector3(0.6f, 0.6f, 0.6f);
         while(rock.transform.localScale.x > targetScale.x)
         {
             rock.transform.localScale = Vector3.Lerp(rock.transform.localScale, targetScale, Time.deltaTime * 0.8f);

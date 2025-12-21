@@ -13,14 +13,16 @@ public class TriggerOnCollision : MonoBehaviour
   public float TriggerGap = 5f;
   protected float lastTriggeredTime = -1000f;
 
-
   private void OnTriggerEnter(Collider other)
   {
     //if layer mask is included in target mask
     if ((TargetLayerMask | (1 << other.gameObject.layer)) == TargetLayerMask)
     {
-      UnityEvent?.Invoke();
-      lastTriggeredTime = Time.time;
+      if (Time.time - lastTriggeredTime > TriggerGap) 
+      {
+        UnityEvent?.Invoke();
+        lastTriggeredTime = Time.time;
+      }
     }
   }
 

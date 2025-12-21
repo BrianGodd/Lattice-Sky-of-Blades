@@ -15,7 +15,7 @@ public class tmpResetStage : MonoBehaviour
     {
         if (transform.position.y < -10)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1 + GameMaster.instance.levelIndex);
 
         }
     }

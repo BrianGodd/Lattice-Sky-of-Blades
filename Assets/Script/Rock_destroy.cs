@@ -23,14 +23,15 @@ public class Rock_destroy : MonoBehaviour
     IEnumerator countDownDestroy(float tim)
     {
         yield return new WaitForSeconds(tim);
-        if(!isrespawn)Destroy(gameObject);
+        /*if(!isrespawn)Destroy(gameObject);
         else
         {
             rock.SetActive(false);
             yield return new WaitForSeconds(respawnTime);
             rock.SetActive(true);
 
-        }
+        }*/
+        GetComponent<MeshDestroy>().DestroyMesh();
     }
 
     private void OnTriggerEnter(Collider other)

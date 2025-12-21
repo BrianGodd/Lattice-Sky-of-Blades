@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/The_Viking_Village.unity
-    guid: 00000000000000000000000000000000
+    path: Assets/Scenes/Brian_Level/Home.unity
+    guid: 4765ef2f43179ec47af06f2422df05b0
+  - enabled: 1
+    path: Assets/Scenes/Brian_Level/stage1-1.unity
+    guid: c0f82076a7bb2af4e92e99adde0442a6
+  - enabled: 1
+    path: Assets/Scenes/Brian_Level/stage1-2.unity
+    guid: 9b134633be8fceb40bcef5c27ec6150b
+  - enabled: 1
+    path: Assets/Scenes/Brian_Level/stage1-3.unity
+    guid: ed41f07af6c7c534fac3cc0717d80243
   m_configObjects: {}
