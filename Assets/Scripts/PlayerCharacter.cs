@@ -40,6 +40,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     public event Action OnMagicJump;
     public event Action OnJump;
     public event Action OnLand;
+    public event Action OnDash;
     
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
@@ -351,7 +352,6 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                     currentVelocity += forward * earlyJumpForwardBoost;
                     if(_jumpBuffered) _jumpBuffered = false;
                     OnMagicJump?.Invoke();
-                    // GetComponent<PlayerPlatformer_New>().MagicJump();
                 }
             }
             else
@@ -391,23 +391,10 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             _dashTimer = 0f;
             
             var desiredDashDirection = (_requestedRotation * Vector3.forward).normalized;
-            // var currentPlanarVelocity = Vector3.ProjectOnPlane(currentVelocity, motor.CharacterUp);
-            // var currentSpeed = currentPlanarVelocity.magnitude;
-            
-            // Blend dash speed based on direction alignment when moving faster than dash speed
-            // if (currentSpeed > dashSpeed)
-            // {
-            //     var directionDot = Vector3.Dot(desiredDashDirection, currentPlanarVelocity.normalized);
-            //     // directionDot ranges from -1 (opposite) to 1 (same direction)
-            //     // When same direction (1), use current speed; when different (0 or negative), use min speed
-            //     var blendFactor = Mathf.Max(0f, directionDot);
-            //     var effectiveDashSpeed = Mathf.Lerp(dashMinSpeed, currentSpeed, blendFactor);
-            //     dashSpeed = effectiveDashSpeed;  
-            // }
-            
             _dashDirection = desiredDashDirection;
             _dashVelocity = Vector3.zero;
             _dashBufferedForces = Vector3.zero;
+            OnDash?.Invoke();
             motor.ForceUnground(0.1f);
         }
 
