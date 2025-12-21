@@ -80,7 +80,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     // [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
     [Header("External Forces")]
-    [SerializeField] private float externalForceFriction = 60f;
+    // [SerializeField] private float externalForceFriction = 60f;
 
     [Header("Debug")]
     [SerializeField] private Vector3 testForce = new Vector3(0, 10, 0);
@@ -106,7 +106,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private Vector3 _dashDirection;
     private Vector3 _dashVelocity;
     private Vector3 _dashBufferedForces;
-    private Vector3 _externalVelocity;
+    // private Vector3 _externalVelocity;
 
     // [SerializeField] private float minMagicSpeed;
 
@@ -218,7 +218,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 var speed = _state.Stance == Stance.Stand ? walkSpeed : crouchSpeed;
                 var response = _state.Stance == Stance.Stand ? walkResponse : crouchResponse;
 
-                var targetVelocity = groundedMovement * speed + _externalVelocity;
+                var targetVelocity = groundedMovement * speed;
 
                 
                 var moveVelocity = Vector3.Lerp
@@ -391,32 +391,33 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
 
         // Apply external forces
         if(_externalForce != Vector3.zero){
-            if(_state.Stance == Stance.Dash)
-            {
-                // Accumulate buffered forces during dash to apply when dash ends
-                _dashBufferedForces += _externalForce;
-            }
-            else
-            {
-                _externalVelocity += _externalForce;
-            }
+            // if(_state.Stance == Stance.Dash)
+            // {
+            //     // Accumulate buffered forces during dash to apply when dash ends
+            //     _dashBufferedForces += _externalForce;
+            // }
+            // else
+            // {
+            //     _externalVelocity += _externalForce;
+            // }
+            currentVelocity += _externalForce;
             _externalForce = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
         
         // Apply external velocity universally across all states (except dash)
-        if (_state.Stance != Stance.Dash && _externalVelocity.sqrMagnitude > 0.01f)
-        {
-            currentVelocity += _externalVelocity;
-            Debug.Log("Applying External Velocity: "+_externalVelocity);
-            // Apply friction to external velocity based on state
-            _externalVelocity -= _externalVelocity * (externalForceFriction * deltaTime);
+        // if (_state.Stance != Stance.Dash && _externalVelocity.sqrMagnitude > 0.01f)
+        // {
+        //     currentVelocity += _externalVelocity;
+        //     Debug.Log("Applying External Velocity: "+_externalVelocity);
+        //     // Apply friction to external velocity based on state
+        //     _externalVelocity -= _externalVelocity * (externalForceFriction * deltaTime);
             
-            if (_externalVelocity.sqrMagnitude < 0.01f)
-            {
-                _externalVelocity = Vector3.zero;
-            }
-        }
+        //     if (_externalVelocity.sqrMagnitude < 0.01f)
+        //     {
+        //         _externalVelocity = Vector3.zero;
+        //     }
+        // }
 
         // Debug.Log(_requestedCrouch);
     }
