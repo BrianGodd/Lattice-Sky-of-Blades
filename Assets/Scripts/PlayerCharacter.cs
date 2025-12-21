@@ -94,7 +94,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedJump;
     private bool _requestedJumpSustain;
     private bool _requestedCrouch;
-    private bool _lastRequestedCrouch;
+    private bool _crouchJustPressed;
     private bool _requestedDash;
     private float _timeSinceGrounded;
     private float _timeSinceUngrounded;
@@ -142,13 +142,20 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
 
         _requestedJumpSustain = input.JumpSustain;
         
-        _lastRequestedCrouch = _requestedCrouch;
+        var previousCrouch = _requestedCrouch;
         _requestedCrouch = input.Crouch switch
         {
             CrouchInput.Toggle => !_requestedCrouch,
             CrouchInput.None => _requestedCrouch,
             _ => throw new ArgumentOutOfRangeException()
         };
+        
+        // Track when crouch is newly pressed
+        if (_requestedCrouch && !previousCrouch)
+        {
+            _crouchJustPressed = true;
+        }
+        
         _requestedDash = _requestedDash || input.Dash;
     }
 
@@ -265,11 +272,12 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         {
             _timeSinceUngrounded += deltaTime;
             // Fast fall when crouch is pressed in air (only on new press)
-            if (_requestedCrouch && !_lastRequestedCrouch)
+            if (_crouchJustPressed)
             {
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
+                _crouchJustPressed = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
