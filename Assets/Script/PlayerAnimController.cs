@@ -19,6 +19,7 @@ public class PlayerAnimController : MonoBehaviour
         {
             PlayerCharacter.Instance.OnJump += PlayJumpAnim;
             PlayerCharacter.Instance.OnLand += PlayLandingAnim;
+            PlayerCharacter.Instance.OnDash += PlayDashAnim;
         }   
     }
 
@@ -130,6 +131,6 @@ public class PlayerAnimController : MonoBehaviour
 
     public void PlayDashAnim()
     {
-        animator.SetBool("roll", true);
+        animator.SetTrigger("roll");
     }
 }
