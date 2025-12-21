@@ -65,6 +65,7 @@ public class shootLight : MonoBehaviour
     void hit()
     {
         print("hit");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1 + GameMaster.instance.levelIndex);
     }
 
     bool ishit()
