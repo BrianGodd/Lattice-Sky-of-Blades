@@ -48,7 +48,7 @@ public class MimicController : MonoBehaviour
     {
         frieren.GetComponent<FrierenController>().isEaten = true;
         frieren.transform.parent = this.transform;
-        frieren.transform.position = FT;
+        frieren.transform.localPosition = FT;
         fA.Play();
         fAn.SetBool("help", true);
     }

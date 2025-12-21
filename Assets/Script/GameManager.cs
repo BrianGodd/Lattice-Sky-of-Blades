@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
     public int mode = 0; //0:nothing, 1:sit, 3:hello
     public bool isFirst = true;
 
-    public JoyStickController joyStickController;
+    //public JoyStickController joyStickController;
+
+    public int nowLevel = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +26,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        /*if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("press!");
             isFirst = !isFirst;
@@ -35,14 +37,14 @@ public class GameManager : MonoBehaviour
         fir_Camera.GetComponent<Camera>().enabled = isFirst;
         thr_Camera.GetComponent<Camera>().enabled = !isFirst;
         fir_Camera.gameObject.SetActive(isFirst);
-        thr_Camera.gameObject.SetActive(!isFirst);
+        thr_Camera.gameObject.SetActive(!isFirst);*/
     }
 
     public void active()
     {
         switch(mode)
         {
-            case 0:
+            /*case 0:
                 UIHint.SetActive(false);
                 myAnim.SetBool("standup", true);
                 fir_Camera.GetComponent<Camera>().enabled = true;
@@ -58,28 +60,26 @@ public class GameManager : MonoBehaviour
                 MainC.transform.rotation = Quaternion.identity;
                 myAnim.SetBool("standup", false);
                 myAnim.Play("sit");
-                break;
+                break;*/
             case 3:
-                myAnim.SetBool("standup", false);
+                //myAnim.SetBool("standup", false);
                 asuna.Play("hello");
                 myAnim.Play("waving");
+                fade.SetBool("fadein", true);
+                StartCoroutine(GoToLevelScene(1.5f));
                 break;
             case 4:
                 if(frieren.gameObject.GetComponent<FrierenController>().isEaten)
                 {
                     fade.SetBool("fadein", true);
-                    StartCoroutine(GoToScene2(1.5f));
+                    StartCoroutine(GoToTrainingScene(1.5f));
                 }
                 else
                 {
-                    myAnim.SetBool("standup", false);
+                    //myAnim.SetBool("standup", false);
                     frieren.SetBool("kneel", true);
                     myAnim.Play("waving");
                 }
-                break;
-            case 5:
-                fade.SetBool("fadein", true);
-                StartCoroutine(GoToScene1(1.5f));
                 break;
         }
     }
@@ -94,17 +94,17 @@ public class GameManager : MonoBehaviour
         mode = num;
     }
 
-    IEnumerator GoToScene2(float time)
+    IEnumerator GoToTrainingScene(float time)
     {
         yield return new WaitForSeconds(time);
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
     }
 
-    IEnumerator GoToScene1(float time)
+    IEnumerator GoToLevelScene(float time)
     {
         yield return new WaitForSeconds(time);
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(nowLevel);
     }
 }
