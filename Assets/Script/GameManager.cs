@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
                 //myAnim.SetBool("standup", false);
                 asuna.Play("hello");
                 myAnim.Play("waving");
-                fade.SetBool("fadein", true);
+                if(nowLevel != 3) fade.SetBool("fadein", true);
                 StartCoroutine(GoToLevelScene(1.5f));
                 break;
             case 4:
