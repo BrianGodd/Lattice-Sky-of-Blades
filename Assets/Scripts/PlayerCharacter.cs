@@ -38,6 +38,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
 {
     public static PlayerCharacter Instance { get; private set; }
     public event Action OnMagicJump;
+    public event Action OnJump;
+    public event Action OnLand;
     
     [SerializeField] private KinematicCharacterMotor motor;
     [SerializeField] private Transform root;
@@ -109,6 +111,13 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     // private Vector3 _externalVelocity;
 
     // [SerializeField] private float minMagicSpeed;
+    
+    // Public Properties
+    public bool IsGrounded => _state.Grounded;
+    public bool IsWalking => _state.Grounded && _state.Stance == Stance.Stand && _requestedMovement.sqrMagnitude > 0.01f;
+    public Stance CurrentStance => _state.Stance;
+    public Vector3 CurrentVelocity => motor.Velocity;
+    public CharacterState CurrentState => _state;
 
     public void Awake()
     {
@@ -331,6 +340,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 var targetVerticalSpeed = Mathf.Max(currentVerticalSpeed, jumpSpeed);
                 currentVelocity += motor.CharacterUp * (targetVerticalSpeed - currentVerticalSpeed);
+                
+                OnJump?.Invoke();
 
                 // Apply forward boost if jumped within early jump window
                 if (_timeSinceGrounded < earlyJumpWindow || _jumpBuffered)
@@ -473,6 +484,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         if (!wasGrounded && _state.Grounded)
         {
             _timeSinceGrounded = 0f;
+            OnLand?.Invoke();
         }
         else if (_state.Grounded)
         {

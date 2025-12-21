@@ -368,6 +368,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7091638626944097244, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7530265986642341875, guid: e0d0e3cbf8c598f4f82d3b56fe0b107e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6997,7 +7002,6 @@ MonoBehaviour:
   dashSpeed: 40
   dashDuration: 0.2
   testForce: {x: 0, y: 10, z: 0}
-  minMagicSpeed: 0
 --- !u!4 &2082799787992859822
 Transform:
   m_ObjectHideFlags: 0
