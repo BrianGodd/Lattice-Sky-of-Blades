@@ -7,6 +7,7 @@ public class PlayerAudioController : MonoBehaviour
     [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
     [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
     [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
+    [SerializeField] private AudioClip m_DashSound;           // the sound played when character dashes.
     private AudioSource m_AudioSource;
     [SerializeField] private float m_StepInterval = 5f;
     [SerializeField] private float m_RunstepLenghten = 0.7f;
@@ -21,6 +22,7 @@ public class PlayerAudioController : MonoBehaviour
         {
             PlayerCharacter.Instance.OnJump += PlayJumpSound;
             PlayerCharacter.Instance.OnLand += PlayLandingSound;
+            PlayerCharacter.Instance.OnDash += PlayDashSound;
         }   
         m_AudioSource = GetComponent<AudioSource>();
     }
@@ -60,6 +62,12 @@ public class PlayerAudioController : MonoBehaviour
         m_AudioSource.clip = m_LandSound;
         m_AudioSource.Play();
         m_NextStep = m_StepCycle + .5f;
+    }
+
+    private void PlayDashSound()
+    {
+        m_AudioSource.clip = m_DashSound;
+        m_AudioSource.Play();
     }
 
     private void PlayFootStepAudio()
