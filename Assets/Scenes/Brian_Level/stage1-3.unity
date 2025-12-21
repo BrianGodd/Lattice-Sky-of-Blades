@@ -36139,6 +36139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c5356ce4c015374d85bdfd9caa6e8bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fade: {fileID: 1901165101}
   levelIndex: 2
   DebugPlayerPos: {fileID: 413135157}
 --- !u!1 &1512520227
@@ -55643,7 +55644,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 610e080c96413db4b9783c9eaaf3cf4c, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

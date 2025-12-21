@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
 {
+    public Animator fade;
     public static GameMaster instance;
     public int levelIndex = 0;
 
@@ -27,5 +29,16 @@ public class GameMaster : MonoBehaviour
     public void Win()
     {
         Debug.Log("You Win!");
+        fade.SetBool("fadein", true);
+        Time.timeScale = 0.1f;
+        StartCoroutine(GoToHomeScene(0.15f));
+    }
+
+    IEnumerator GoToHomeScene(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1f;
     }
 }
