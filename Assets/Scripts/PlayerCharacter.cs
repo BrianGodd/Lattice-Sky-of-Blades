@@ -94,7 +94,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedJump;
     private bool _requestedJumpSustain;
     private bool _requestedCrouch;
-    private bool _lastRequestedCrouch;
+    private bool _crouchJustPressed;
     private bool _requestedDash;
     private float _timeSinceGrounded;
     private float _timeSinceUngrounded;
@@ -142,13 +142,20 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
 
         _requestedJumpSustain = input.JumpSustain;
         
-        _lastRequestedCrouch = _requestedCrouch;
+        var previousCrouch = _requestedCrouch;
         _requestedCrouch = input.Crouch switch
         {
             CrouchInput.Toggle => !_requestedCrouch,
             CrouchInput.None => _requestedCrouch,
             _ => throw new ArgumentOutOfRangeException()
         };
+        
+        // Track when crouch is newly pressed
+        if (_requestedCrouch && !previousCrouch)
+        {
+            _crouchJustPressed = true;
+        }
+        
         _requestedDash = _requestedDash || input.Dash;
     }
 
@@ -184,6 +191,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         {
             _timeSinceUngrounded = 0f;
             _ungroundedDueToJump = false;
+            
+            // Clear crouch just pressed when grounded to prevent false fast fall triggers
+            _crouchJustPressed = false;
 
             var groundedMovement = motor.GetDirectionTangentToSurface
             (
@@ -265,11 +275,12 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         {
             _timeSinceUngrounded += deltaTime;
             // Fast fall when crouch is pressed in air (only on new press)
-            if (_requestedCrouch && !_lastRequestedCrouch)
+            if (_crouchJustPressed)
             {
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
+                _crouchJustPressed = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
@@ -380,7 +391,7 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             //     // When same direction (1), use current speed; when different (0 or negative), use min speed
             //     var blendFactor = Mathf.Max(0f, directionDot);
             //     var effectiveDashSpeed = Mathf.Lerp(dashMinSpeed, currentSpeed, blendFactor);
-            //     dashSpeed = effectiveDashSpeed;
+            //     dashSpeed = effectiveDashSpeed;  
             // }
             
             _dashDirection = desiredDashDirection;
