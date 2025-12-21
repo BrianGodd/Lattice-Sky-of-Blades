@@ -48,8 +48,11 @@ public class GameManager : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Ending.SetActive(false);
-            GetComponent<AudioSource>().Play();
+            if(Ending.active) 
+            {
+                Ending.SetActive(false);
+                GetComponent<AudioSource>().Play();
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.R))
