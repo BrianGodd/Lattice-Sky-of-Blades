@@ -17,6 +17,9 @@ public class shooterController : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject player,origin;
     public GameObject ltarget,rtarget;
+    [SerializeField] float angleOffset = 10f;
+    [SerializeField] int waves = 3;
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +56,7 @@ public class shooterController : MonoBehaviour
         switch(shootMode)
         {
             case 0:
-                yield return StartCoroutine(ShootDir.mutiAimshootIE(count, bulletSpeed, this.transform, bulletPrefab, player.transform, 5, 5,0.2f));
+                yield return StartCoroutine(ShootDir.mutiAimshootIE(count, bulletSpeed, this.transform, bulletPrefab, player.transform, angleOffset, waves,0.4f));
                 break;
             case 1:
                 ShootDir.Aimshoot(count, bulletSpeed, this.transform,bulletPrefab,player.transform,5);

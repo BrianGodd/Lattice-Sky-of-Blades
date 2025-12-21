@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class spring : MonoBehaviour
@@ -31,6 +32,16 @@ public class spring : MonoBehaviour
             StartCoroutine(CD());
         }
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player" && !isCD)
+        {
+            PlayerCharacter.Instance.AddForce(forceV);
+            StartCoroutine(CD());
+        }
+    }
+
 
     IEnumerator CD()
     {

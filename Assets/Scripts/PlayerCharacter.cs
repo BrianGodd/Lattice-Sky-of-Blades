@@ -79,6 +79,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     [SerializeField] private float dashDuration = 0.2f;
     // [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+    [Header("External Forces")]
+    // [SerializeField] private float externalForceFriction = 60f;
 
     [Header("Debug")]
     [SerializeField] private Vector3 testForce = new Vector3(0, 10, 0);
@@ -92,8 +94,8 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private bool _requestedJump;
     private bool _requestedJumpSustain;
     private bool _requestedCrouch;
+    private bool _crouchJustPressed;
     private bool _requestedDash;
-    // private bool _lastRequestedCrouch;
     private float _timeSinceGrounded;
     private float _timeSinceUngrounded;
     private float _timeSinceJumpRequested;  
@@ -103,8 +105,10 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
     private float _dashTimer;
     private Vector3 _dashDirection;
     private Vector3 _dashVelocity;
+    private Vector3 _dashBufferedForces;
+    // private Vector3 _externalVelocity;
 
-    [SerializeField] private float minMagicSpeed;
+    // [SerializeField] private float minMagicSpeed;
 
     public void Awake()
     {
@@ -137,12 +141,21 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         }
 
         _requestedJumpSustain = input.JumpSustain;
+        
+        var previousCrouch = _requestedCrouch;
         _requestedCrouch = input.Crouch switch
         {
             CrouchInput.Toggle => !_requestedCrouch,
             CrouchInput.None => _requestedCrouch,
             _ => throw new ArgumentOutOfRangeException()
         };
+        
+        // Track when crouch is newly pressed
+        if (_requestedCrouch && !previousCrouch)
+        {
+            _crouchJustPressed = true;
+        }
+        
         _requestedDash = _requestedDash || input.Dash;
     }
 
@@ -178,6 +191,9 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         {
             _timeSinceUngrounded = 0f;
             _ungroundedDueToJump = false;
+            
+            // Clear crouch just pressed when grounded to prevent false fast fall triggers
+            _crouchJustPressed = false;
 
             var groundedMovement = motor.GetDirectionTangentToSurface
             (
@@ -258,13 +274,13 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
         else
         {
             _timeSinceUngrounded += deltaTime;
-            // Fast fall when crouch is pressed in air
-            if (_requestedCrouch)
+            // Fast fall when crouch is pressed in air (only on new press)
+            if (_crouchJustPressed)
             {
                 Debug.Log("Fast Fall");
                 var currentVerticalSpeed = Vector3.Dot(currentVelocity, motor.CharacterUp);
                 currentVelocity += motor.CharacterUp * (-fastFallSpeed - currentVerticalSpeed);
-                //_requestedCrouch = false;
+                _crouchJustPressed = false;
             }
 
             if(_requestedMovement.sqrMagnitude > 0f)
@@ -343,20 +359,16 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             
             if (_dashTimer >= dashDuration)
             {
-                // Preserve only external forces by subtracting the base dash velocity
-                var externalVelocity = currentVelocity - _dashVelocity;
-                currentVelocity = externalVelocity;
+                // Apply any accumulated buffered forces from during the dash
+                currentVelocity = _dashBufferedForces;
+                _dashBufferedForces = Vector3.zero;
                 _state.Stance = Stance.Stand;
                 Debug.Log("End Dash");
             }
             else
             {
-                // var normalizedTime = _dashTimer / dashDuration;
-                // var curveMultiplier = dashSpeedCurve.Evaluate(normalizedTime);
-                // var targetSpeed = dashSpeed * curveMultiplier;
-                
                 _dashVelocity = _dashDirection * dashSpeed;
-                currentVelocity = _dashVelocity;
+                currentVelocity = _dashVelocity + _dashBufferedForces;
             }
         }
         
@@ -379,20 +391,46 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             //     // When same direction (1), use current speed; when different (0 or negative), use min speed
             //     var blendFactor = Mathf.Max(0f, directionDot);
             //     var effectiveDashSpeed = Mathf.Lerp(dashMinSpeed, currentSpeed, blendFactor);
-            //     dashSpeed = effectiveDashSpeed;
+            //     dashSpeed = effectiveDashSpeed;  
             // }
             
             _dashDirection = desiredDashDirection;
             _dashVelocity = Vector3.zero;
+            _dashBufferedForces = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
 
         // Apply external forces
         if(_externalForce != Vector3.zero){
+            // if(_state.Stance == Stance.Dash)
+            // {
+            //     // Accumulate buffered forces during dash to apply when dash ends
+            //     _dashBufferedForces += _externalForce;
+            // }
+            // else
+            // {
+            //     _externalVelocity += _externalForce;
+            // }
             currentVelocity += _externalForce;
             _externalForce = Vector3.zero;
             motor.ForceUnground(0.1f);
         }
+        
+        // Apply external velocity universally across all states (except dash)
+        // if (_state.Stance != Stance.Dash && _externalVelocity.sqrMagnitude > 0.01f)
+        // {
+        //     currentVelocity += _externalVelocity;
+        //     Debug.Log("Applying External Velocity: "+_externalVelocity);
+        //     // Apply friction to external velocity based on state
+        //     _externalVelocity -= _externalVelocity * (externalForceFriction * deltaTime);
+            
+        //     if (_externalVelocity.sqrMagnitude < 0.01f)
+        //     {
+        //         _externalVelocity = Vector3.zero;
+        //     }
+        // }
+
+        // Debug.Log(_requestedCrouch);
     }
 
     public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
