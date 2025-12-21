@@ -5,10 +5,10 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerAnimController : MonoBehaviour
 {
-    /*public AudioSource Sword, Kirito;
+    public AudioSource Sword, Kirito;
     public AudioClip[] ATTSound;
     public Animator animator;
-    public GameObject StarBust, hintT, LC, RC;
+    public GameObject StarBust, hintT;
     float skillCount = 0, needCount = 36;
     bool isSkill = false, isLeft = true;
 
@@ -17,8 +17,8 @@ public class PlayerAnimController : MonoBehaviour
     {
         if (PlayerCharacter.Instance != null)
         {
-            PlayerCharacter.Instance.OnJump += PlayJumpSound;
-            PlayerCharacter.Instance.OnLand += PlayLandingSound;
+            PlayerCharacter.Instance.OnJump += PlayJumpAnim;
+            PlayerCharacter.Instance.OnLand += PlayLandingAnim;
         }   
     }
 
@@ -27,128 +27,109 @@ public class PlayerAnimController : MonoBehaviour
     {
         if(PlayerCharacter.Instance.IsWalking)
         {
-            animator.SetBool("run", true);
-            animator.SetBool("jump", false);
-        }
-        if(!FPC.m_IsWalking && !FPC.m_Jump)
-        {
-            animator.SetBool("fast run", true);
-            animator.SetBool("jump", false);
-        }
-        else if(FPC.m_IsWalking)
-        {
-            animator.SetBool("fast run", false);
-        }
-        if(FPC.m_Jump)
-        {
-            animator.SetBool("jump", true);
-        }
-        if(!FPC.isWalk)
-        {
-            animator.SetBool("run", false);
-            if(!FPC.m_Jump) animator.SetBool("jump", false);
-        }
-
-        if(isScene1)
-        {
-            if(Input.GetKey(KeyCode.F) && !animator.GetBool("slash"))
+            if(PlayerCharacter.Instance.CurrentVelocity.magnitude > 8f)
             {
-                Sword.Play();
-                Kirito.clip = ATTSound[Random.Range(0, ATTSound.Length)];
-                Kirito.Play();
-                animator.SetBool("slash", true);
-                StartCoroutine(CloseAnim(1.2f, "slash"));
-            }
-        }
-        else
-        {
-            if(Input.GetMouseButtonDown(0))
-            {
-                if(!Sword.isPlaying) Sword.Play();
-                if(!Kirito.isPlaying)
-                {
-                    Kirito.clip = ATTSound[0];
-                    Kirito.Play();
-                }
-                animator.SetBool("slashleft", true);
-                animator.SetBool("slashright", false);
-                if(isLeft && isSkill)// && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash"))
-                {
-                    isLeft = false;
-                    skillCount+=1;
-                    GameObject ttt = Instantiate(hintT);
-                    ttt.GetComponent<HintController>().tt.text = ((int)(skillCount)).ToString();
-                    Destroy(ttt, 2);
-                }
-            }
-
-            /*if(!isLeft && isSkill && !animator.GetCurrentAnimatorStateInfo(3).IsName("leftSlash")) RC.SetActive(true);
-            else RC.SetActive(false);
-            
-            if(isLeft && isSkill && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash")) LC.SetActive(true);
-            else LC.SetActive(false);
-
-            if(Input.GetMouseButtonDown(1))
-            {
-                if(!Sword.isPlaying) Sword.Play();
-                if(!Kirito.isPlaying)
-                {
-                    Kirito.clip = ATTSound[1];
-                    Kirito.Play();
-                }
-                animator.SetBool("slashright", true);
-                animator.SetBool("slashleft", false);
-                if(!isLeft && isSkill)// && !animator.GetCurrentAnimatorStateInfo(3).IsName("leftSlash"))
-                {
-                    isLeft = true;
-                    skillCount+=1;
-                    GameObject ttt = Instantiate(hintT);
-                    ttt.GetComponent<HintController>().tt.text = ((int)(skillCount)).ToString();
-                    Destroy(ttt, 2);
-                }
-            }
-            if(Input.GetKeyDown(KeyCode.F) && !isSkill)
-            {
-                isSkill = true;
-                Kirito.clip = ATTSound[2];
-                Kirito.Play();
-            }
-
-            if(isSkill)
-            {
-                //FPC.m_WalkSpeed = 3f;
-                //FPC.m_RunSpeed = 6f;
-                animator.SetFloat("speed", (skillCount)/(needCount) + 1f);
-
-                if(skillCount>=needCount)
-                {
-                    isSkill = false;
-                    skillCount = 0;
-                    Debug.Log("Success!");
-                    GameObject st = Instantiate(StarBust);
-                    st.transform.position = this.transform.position;
-                    Vector3 stDirection = transform.forward;
-                    st.transform.rotation = Quaternion.LookRotation(stDirection);
-                    Destroy(st, 10);
-                }
-            }
-            else if (isHurt)
-            {
-                //FPC.m_WalkSpeed = 2f;
-                //FPC.m_RunSpeed = 4f;
+                animator.SetBool("run", false);
+                animator.SetBool("fast run", true);
             }
             else
             {
-                //FPC.m_WalkSpeed = 5f;
-                //FPC.m_RunSpeed = 10f;
+                animator.SetBool("fast run", false);
+                animator.SetBool("run", true);
+            }
+        }
+        else 
+        {
+            animator.SetBool("run", false);
+            animator.SetBool("fast run", false);
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(!Sword.isPlaying) Sword.Play();
+            if(!Kirito.isPlaying)
+            {
+                Kirito.clip = ATTSound[0];
+                Kirito.Play();
+            }
+            animator.SetBool("slashleft", true);
+            animator.SetBool("slashright", false);
+            if(isLeft && isSkill)// && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash"))
+            {
+                isLeft = false;
+                skillCount+=1;
+                GameObject ttt = Instantiate(hintT);
+                ttt.GetComponent<HintController>().tt.text = ((int)(skillCount)).ToString();
+                Destroy(ttt, 2);
+            }
+        }
+
+        /*if(!isLeft && isSkill && !animator.GetCurrentAnimatorStateInfo(3).IsName("leftSlash")) RC.SetActive(true);
+        else RC.SetActive(false);
+        
+        if(isLeft && isSkill && !animator.GetCurrentAnimatorStateInfo(4).IsName("rightslash")) LC.SetActive(true);
+        else LC.SetActive(false);*/
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            if(!Sword.isPlaying) Sword.Play();
+            if(!Kirito.isPlaying)
+            {
+                Kirito.clip = ATTSound[1];
+                Kirito.Play();
+            }
+            animator.SetBool("slashright", true);
+            animator.SetBool("slashleft", false);
+            if(!isLeft && isSkill)// && !animator.GetCurrentAnimatorStateInfo(3).IsName("leftSlash"))
+            {
+                isLeft = true;
+                skillCount+=1;
+                GameObject ttt = Instantiate(hintT);
+                ttt.GetComponent<HintController>().tt.text = ((int)(skillCount)).ToString();
+                Destroy(ttt, 2);
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.F) && !isSkill)
+        {
+            isSkill = true;
+            Kirito.clip = ATTSound[2];
+            Kirito.Play();
+        }
+
+        if(isSkill)
+        {
+            animator.SetFloat("speed", (skillCount)/(needCount) + 1f);
+
+            if(skillCount>=needCount)
+            {
+                isSkill = false;
+                skillCount = 0;
+                Debug.Log("Success!");
+                GameObject st = Instantiate(StarBust);
+                st.transform.position = this.transform.position;
+                Vector3 stDirection = transform.forward;
+                st.transform.rotation = Quaternion.LookRotation(stDirection);
+                Destroy(st, 10);
             }
         }
     }
 
-    IEnumerator CloseAnim(float time, string anim)
+    public void PlayJumpAnim()
     {
-        yield return new WaitForSeconds(time);
+        animator.SetBool("jump", true);
+        animator.SetBool("run", false);
+        animator.SetBool("fast run", false);
+    }
 
-        animator.SetBool(anim, false);
-    }*/
+    public void PlayLandingAnim()
+    {
+        Debug.Log("LandAnim");
+        animator.SetTrigger("land");
+        animator.SetBool("jump", false);
+    }
+
+    public void PlayDashAnim()
+    {
+        animator.SetBool("roll", true);
+    }
 }
